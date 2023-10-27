@@ -1,0 +1,116 @@
+body {
+	background-color: #F4FFF8;
+	color: mintcream; 
+	font-weight: 300;
+	font-family: 'Oswald';
+}
+
+h1, h2 {
+
+    color: #456990;
+    font-family: times;
+    font-weight: bolder;
+    letter-spacing: 5px;
+    font-size: 35px;
+}
+
+
+a {
+	font-weight: bold;
+	text-decoration: none;
+	color: #456990; 
+	font-size: 35px;
+
+}
+
+p{
+	color: mintcream; 
+	font-weight: 200;
+	font-size: 20px;
+
+}
+
+
+a:hover {
+	color: #4D4847;} 
+
+div{}
+
+.container {
+	width: 700px; 
+	margin: 40px auto;
+}
+
+
+@media (max-width: 760px) {
+	.container {
+		width: 600px;
+	}
+}
+
+
+@media (max-width: 500px) {
+	.container{
+		width: 400px;
+		background-color: #8BAAAD;
+	}
+}
+
+
+.card-white {
+	background-color: white;
+	padding: 40px; 
+	box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
+	border-radius: 5px;
+	margin: 20px;
+	text-align: center; 
+}
+
+
+.img-circle {
+	border-radius: 50%;
+
+}
+
+.btn-blue {
+	background-color: mintcream;
+	color: #114B5F;
+	font-size: 25px;
+	padding: 10px 15px;
+	border-radius: 5px;
+}
+
+.btn-blue:hover {
+	background-color: black;
+	color: white;
+}
+
+.list-line {
+	list-style: none;
+	padding-left: 0px;
+}
+
+.list-line li {
+	display: inline;
+	padding: 10px;
+}
+
+
+.list-line i {
+	font-size: 50px; 
+	color: #114B5F
+
+
+}
+
+
+.list-line i:hover {
+	color: black;
+
+}
+
+
+#introduction p {
+	margin-bottom: 40px;
+}
+
