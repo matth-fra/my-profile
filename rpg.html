@@ -40,64 +40,31 @@
       padding: 0 16px 88px;
     }
 
-    /* ── RING ─────────────────────── */
-    .ring-section {
+    /* ── HERO AVATAR ─────────────── */
+    .hero-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 44px 0 24px;
-      gap: 10px;
+      padding: 36px 0 20px;
+      gap: 6px;
     }
 
-    .ring-wrap {
-      position: relative;
-      width: 152px;
-      height: 152px;
-    }
-
-    .ring-svg {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-    }
-
-    .ring-track {
-      fill: none;
-      stroke: var(--sep);
-      stroke-width: 9;
-    }
-
-    .ring-fill {
-      fill: none;
-      stroke: var(--muted);
-      stroke-width: 9;
-      stroke-linecap: round;
-      /* circumference = 2π × 62 ≈ 389.56 */
-      stroke-dasharray: 389.56;
-      stroke-dashoffset: 389.56;
-      transition: stroke-dashoffset 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  stroke 0.6s ease;
-    }
-
-    .ring-center {
-      position: absolute;
-      inset: 0;
+    .hero-meta {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 2px;
     }
 
-    .ring-lv {
-      font-size: 2.8rem;
+    .hero-lv {
+      font-size: 2rem;
       font-weight: 700;
       color: var(--text);
       line-height: 1;
       letter-spacing: -0.04em;
     }
 
-    .ring-stage {
+    .hero-stage {
       font-size: 0.68rem;
       font-weight: 600;
       color: var(--muted);
@@ -106,15 +73,52 @@
       transition: color 0.5s;
     }
 
-    .xp-sub {
-      font-size: 0.78rem;
-      color: var(--muted);
+    [data-stage="2"] .hero-stage { color: #007aff; }
+    [data-stage="3"] .hero-stage { color: #ff9f0a; }
+    [data-stage="4"] .hero-stage { color: #ff375f; }
+
+    .avatar-svg {
+      width: 160px;
+      height: 186px;
+      overflow: visible;
     }
 
-    /* Stage label colour matches ring */
-    [data-stage="2"] .ring-stage { color: #007aff; }
-    [data-stage="3"] .ring-stage { color: #ff9f0a; }
-    [data-stage="4"] .ring-stage { color: #ff375f; }
+    .av-stage {
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .av-stage.active { opacity: 1; }
+
+    .xp-bar-wrap {
+      width: 160px;
+    }
+
+    .xp-track {
+      height: 4px;
+      background: var(--sep);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .xp-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--muted);
+      border-radius: 3px;
+      transition: width 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  background 0.6s ease;
+    }
+
+    [data-stage="2"] .xp-fill { background: #007aff; }
+    [data-stage="3"] .xp-fill { background: #ff9f0a; }
+    [data-stage="4"] .xp-fill { background: #ff375f; }
+
+    .xp-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 5px;
+    }
 
     /* ── DATE ─────────────────────── */
     .day-row {
@@ -527,17 +531,125 @@
 
 <div class="app">
 
-  <!-- RING PROGRESS -->
-  <div class="ring-section" id="ring-section" data-stage="1">
-    <div class="ring-wrap">
-      <svg class="ring-svg" viewBox="0 0 140 140">
-        <circle class="ring-track" cx="70" cy="70" r="62"/>
-        <circle class="ring-fill"  cx="70" cy="70" r="62" id="xp-ring"/>
-      </svg>
-      <div class="ring-center">
-        <span class="ring-lv"    id="ring-level">1</span>
-        <span class="ring-stage" id="ring-stage">Apprenti</span>
-      </div>
+  <!-- HERO AVATAR -->
+  <div class="hero-section" id="ring-section" data-stage="1">
+    <div class="hero-meta">
+      <span class="hero-lv" id="ring-level">1</span>
+      <span class="hero-stage" id="ring-stage">Apprenti</span>
+    </div>
+
+    <!-- 4-stage inline SVG avatar, viewBox 0 0 160 186 -->
+    <svg class="avatar-svg" viewBox="0 0 160 186" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- STAGE 1 · Apprenti — mince, épaules tombantes, posture voûtée -->
+      <g class="av-stage active" id="av-s1">
+        <!-- tête -->
+        <circle cx="80" cy="28" r="16" fill="#d4b896"/>
+        <!-- cou -->
+        <rect x="76" y="42" width="8" height="8" rx="2" fill="#c8a882"/>
+        <!-- torse voûté — épaules tombantes, dos arrondi -->
+        <path d="M58 52 Q62 50 80 50 Q98 50 102 52 Q106 60 104 76 Q102 88 80 90 Q58 88 56 76 Q54 60 58 52Z" fill="#a0a0a8"/>
+        <!-- bras gauche tombant -->
+        <path d="M58 55 Q50 62 46 78 Q44 86 47 90" stroke="#a0a0a8" stroke-width="9" stroke-linecap="round"/>
+        <!-- bras droit tombant -->
+        <path d="M102 55 Q110 62 114 78 Q116 86 113 90" stroke="#a0a0a8" stroke-width="9" stroke-linecap="round"/>
+        <!-- mains -->
+        <circle cx="47" cy="91" r="5" fill="#d4b896"/>
+        <circle cx="113" cy="91" r="5" fill="#d4b896"/>
+        <!-- jambes serrées -->
+        <path d="M72 90 Q70 118 68 146" stroke="#7a7a80" stroke-width="10" stroke-linecap="round"/>
+        <path d="M88 90 Q90 118 92 146" stroke="#7a7a80" stroke-width="10" stroke-linecap="round"/>
+        <!-- pieds -->
+        <ellipse cx="68" cy="150" rx="9" ry="5" fill="#5a5a60"/>
+        <ellipse cx="92" cy="150" rx="9" ry="5" fill="#5a5a60"/>
+      </g>
+
+      <!-- STAGE 2 · Disciple — plus carré, se redresse, tenue training -->
+      <g class="av-stage" id="av-s2">
+        <!-- tête -->
+        <circle cx="80" cy="27" r="17" fill="#d4b896"/>
+        <!-- cou -->
+        <rect x="75" y="42" width="10" height="8" rx="2" fill="#c8a882"/>
+        <!-- torse plus droit, légèrement élargi -->
+        <path d="M55 52 Q62 48 80 48 Q98 48 105 52 Q110 62 108 78 Q106 92 80 94 Q54 92 52 78 Q50 62 55 52Z" fill="#3a7bd5"/>
+        <!-- col training -->
+        <path d="M72 48 L80 56 L88 48" fill="#2a6bc5"/>
+        <!-- bras gauche semi-levé -->
+        <path d="M56 56 Q46 64 42 80 Q41 88 44 93" stroke="#3a7bd5" stroke-width="10" stroke-linecap="round"/>
+        <!-- bras droit semi-levé -->
+        <path d="M104 56 Q114 64 118 80 Q119 88 116 93" stroke="#3a7bd5" stroke-width="10" stroke-linecap="round"/>
+        <!-- mains -->
+        <circle cx="44" cy="94" r="6" fill="#d4b896"/>
+        <circle cx="116" cy="94" r="6" fill="#d4b896"/>
+        <!-- jambes légèrement écartées -->
+        <path d="M74 94 Q71 122 69 148" stroke="#1e4fa0" stroke-width="11" stroke-linecap="round"/>
+        <path d="M86 94 Q89 122 91 148" stroke="#1e4fa0" stroke-width="11" stroke-linecap="round"/>
+        <!-- pieds -->
+        <ellipse cx="69" cy="152" rx="10" ry="5" fill="#142e6e"/>
+        <ellipse cx="91" cy="152" rx="10" ry="5" fill="#142e6e"/>
+      </g>
+
+      <!-- STAGE 3 · Maître — athlétique, V-taper, posture droite confiante -->
+      <g class="av-stage" id="av-s3">
+        <!-- tête -->
+        <circle cx="80" cy="25" r="18" fill="#d4b896"/>
+        <!-- cou fort -->
+        <rect x="74" y="41" width="12" height="9" rx="3" fill="#c8a882"/>
+        <!-- torse V-taper marqué, épaules larges, taille fine -->
+        <path d="M48 50 Q62 44 80 44 Q98 44 112 50 Q118 62 116 80 Q112 96 80 100 Q48 96 44 80 Q42 62 48 50Z" fill="#e8930a"/>
+        <!-- détail torse : bandes musculaires -->
+        <path d="M80 44 L80 100" stroke="#d07c08" stroke-width="1.5" opacity="0.5"/>
+        <path d="M68 52 Q66 72 68 92" stroke="#d07c08" stroke-width="1" opacity="0.4"/>
+        <path d="M92 52 Q94 72 92 92" stroke="#d07c08" stroke-width="1" opacity="0.4"/>
+        <!-- bras gauche levé, coude visible -->
+        <path d="M50 54 Q38 64 34 82 Q33 90 36 96" stroke="#e8930a" stroke-width="12" stroke-linecap="round"/>
+        <!-- bras droit levé -->
+        <path d="M110 54 Q122 64 126 82 Q127 90 124 96" stroke="#e8930a" stroke-width="12" stroke-linecap="round"/>
+        <!-- mains larges -->
+        <circle cx="36" cy="97" r="7" fill="#d4b896"/>
+        <circle cx="124" cy="97" r="7" fill="#d4b896"/>
+        <!-- jambes écartées, stables -->
+        <path d="M72 100 Q68 126 66 152" stroke="#a05e06" stroke-width="13" stroke-linecap="round"/>
+        <path d="M88 100 Q92 126 94 152" stroke="#a05e06" stroke-width="13" stroke-linecap="round"/>
+        <!-- pieds -->
+        <ellipse cx="66" cy="156" rx="12" ry="6" fill="#6a3e04"/>
+        <ellipse cx="94" cy="156" rx="12" ry="6" fill="#6a3e04"/>
+      </g>
+
+      <!-- STAGE 4 · Légende — imposant, très large, stance large, détail signature -->
+      <g class="av-stage" id="av-s4">
+        <!-- tête -->
+        <circle cx="80" cy="23" r="20" fill="#d4b896"/>
+        <!-- cou puissant -->
+        <rect x="72" y="41" width="16" height="10" rx="3" fill="#c8a882"/>
+        <!-- torse massif V-taper extrême -->
+        <path d="M38 48 Q60 40 80 40 Q100 40 122 48 Q132 62 130 84 Q126 102 80 108 Q34 102 30 84 Q28 62 38 48Z" fill="#2a2a2e"/>
+        <!-- détail rouge signature : bande centrale -->
+        <path d="M80 42 L80 106" stroke="#ff375f" stroke-width="3"/>
+        <!-- épaulettes signature -->
+        <path d="M38 52 Q34 50 32 54" stroke="#ff375f" stroke-width="3" stroke-linecap="round"/>
+        <path d="M122 52 Q126 50 128 54" stroke="#ff375f" stroke-width="3" stroke-linecap="round"/>
+        <!-- bras gauche coude plié, imposant -->
+        <path d="M40 56 Q26 68 24 86" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
+        <path d="M24 86 Q24 98 30 104" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
+        <!-- bras droit coude plié -->
+        <path d="M120 56 Q134 68 136 86" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
+        <path d="M136 86 Q136 98 130 104" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
+        <!-- gants/poings signature rouge -->
+        <circle cx="30" cy="105" r="9" fill="#ff375f"/>
+        <circle cx="130" cy="105" r="9" fill="#ff375f"/>
+        <!-- jambes très écartées, puissantes -->
+        <path d="M68 108 Q62 130 58 158" stroke="#1a1a1e" stroke-width="16" stroke-linecap="round"/>
+        <path d="M92 108 Q98 130 102 158" stroke="#1a1a1e" stroke-width="16" stroke-linecap="round"/>
+        <!-- pieds larges -->
+        <ellipse cx="58" cy="162" rx="15" ry="7" fill="#ff375f"/>
+        <ellipse cx="102" cy="162" rx="15" ry="7" fill="#ff375f"/>
+      </g>
+    </svg>
+
+    <!-- XP bar -->
+    <div class="xp-bar-wrap">
+      <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
     </div>
     <div class="xp-sub" id="xp-label">0 / 150 XP</div>
   </div>
@@ -655,7 +767,6 @@ const LEVEL_XP = [
 
 const STAGE_LABELS = ['Apprenti', 'Disciple', 'Maître', 'Légende'];
 const STAGE_COLORS = ['#8e8e93', '#007aff', '#ff9f0a', '#ff375f'];
-const RING_CIRC    = 2 * Math.PI * 62; // ≈ 389.56
 const BONUS_ALL_XP = 30;
 
 /* =============================================
@@ -849,11 +960,13 @@ function renderHero() {
   const stEl = document.getElementById('ring-stage');
   if (stEl) stEl.textContent = STAGE_LABELS[stage - 1];
 
-  const ring = document.getElementById('xp-ring');
-  if (ring) {
-    ring.style.strokeDashoffset = RING_CIRC * (1 - pct / 100);
-    ring.style.stroke = STAGE_COLORS[stage - 1];
+  for (let s = 1; s <= 4; s++) {
+    const g = document.getElementById(`av-s${s}`);
+    if (g) g.classList.toggle('active', s === stage);
   }
+
+  const fill = document.getElementById('xp-fill');
+  if (fill) fill.style.width = `${pct}%`;
 
   const lbl = document.getElementById('xp-label');
   if (lbl) lbl.textContent = `${prog} / ${total} XP`;
