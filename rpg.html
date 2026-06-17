@@ -4,477 +4,195 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#06070f">
-  <title>RPG — Matthieu</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#f2f2f7">
+  <title>Daily RPG</title>
   <style>
-    /* ============================
-       RESET & BASE
-    ============================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold:          #c9a440;
-      --gold-bright:   #ffd76a;
-      --gold-dim:      #7a621e;
-      --bg:            #06070f;
-      --bg2:           #0c0e1c;
-      --surface:       #101224;
-      --surface2:      #141728;
-      --border:        #1c2040;
-      --border-b:      #2a3060;
-      --text:          #ddd6c4;
-      --muted:         #5a6080;
-      --corps:         #d94040;
-      --esprit:        #3a78e8;
-      --focus:         #8a35c8;
-      --success:       #40c870;
-      --font-title:    'Cinzel', serif;
-      --font-hero:     'Cinzel Decorative', serif;
-      --font-body:     'Inter', sans-serif;
+      --bg:     #f2f2f7;
+      --card:   #ffffff;
+      --text:   #1c1c1e;
+      --sub:    #3c3c43;
+      --muted:  #8e8e93;
+      --sep:    #e5e5ea;
+      --accent: #007aff;
+      --corps:  #ff3b30;
+      --esprit: #34c759;
+      --focus:  #5856d6;
+      --sh: 0 1px 4px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
     }
 
     html, body {
-      height: 100%;
+      min-height: 100%;
       background: var(--bg);
       color: var(--text);
-      font-family: var(--font-body);
-      overflow-x: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
-    button { touch-action: manipulation; }
+    button { touch-action: manipulation; font-family: inherit; }
 
-    /* ============================
-       BACKGROUND
-    ============================ */
-    .bg-layer {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .bg-gradient {
-      background:
-        linear-gradient(to bottom, rgba(6,7,15,0.72) 0%, rgba(6,7,15,0.88) 55%, rgba(6,7,15,0.97) 100%),
-        radial-gradient(ellipse 80% 50% at 50% 0%, #0e1840 0%, transparent 60%),
-        url('https://d8j0ntlcm91z4.cloudfront.net/user_3A7Wo6kZOzhZoM3hSwPQckkfm2N/hf_20260617_124347_e86857ff-2b7b-4c7c-8f66-b9ae010484fe.png')
-          center top / cover no-repeat,
-        #06070f;
-    }
-
-    .bg-grid {
-      background-image:
-        linear-gradient(rgba(42,48,96,0.18) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(42,48,96,0.18) 1px, transparent 1px);
-      background-size: 40px 40px;
-      opacity: 0.4;
-    }
-
-    .bg-mountains {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 200px;
-    }
-
-    .bg-vignette {
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(6,7,15,0.7) 100%);
-    }
-
-    #particles { position: absolute; inset: 0; overflow: hidden; }
-
-    .pt {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(201,164,64,0.55);
-      animation: pt-rise var(--d,8s) var(--dl,0s) infinite ease-in-out;
-      pointer-events: none;
-    }
-
-    @keyframes pt-rise {
-      0%   { transform: translateY(0)   scale(0.3); opacity: 0; }
-      15%  { opacity: 0.7; }
-      85%  { opacity: 0.3; }
-      100% { transform: translateY(-130px) scale(1); opacity: 0; }
-    }
-
-    /* ============================
-       LAYOUT
-    ============================ */
     .app {
-      position: relative;
-      z-index: 1;
       max-width: 430px;
       margin: 0 auto;
-      padding: 0 16px 96px;
-      min-height: 100dvh;
+      padding: 0 16px 88px;
     }
 
-    /* ============================
-       HERO
-    ============================ */
-    .hero {
+    /* ── RING ─────────────────────── */
+    .ring-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 28px;
-      padding-bottom: 12px;
+      padding: 44px 0 24px;
+      gap: 10px;
     }
 
-    /* === Avatar SVG === */
-    .avatar-wrap {
+    .ring-wrap {
       position: relative;
-      width: 180px;
-      height: 210px;
+      width: 152px;
+      height: 152px;
+    }
+
+    .ring-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .ring-track {
+      fill: none;
+      stroke: var(--sep);
+      stroke-width: 9;
+    }
+
+    .ring-fill {
+      fill: none;
+      stroke: var(--muted);
+      stroke-width: 9;
+      stroke-linecap: round;
+      /* circumference = 2π × 62 ≈ 389.56 */
+      stroke-dasharray: 389.56;
+      stroke-dashoffset: 389.56;
+      transition: stroke-dashoffset 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  stroke 0.6s ease;
+    }
+
+    .ring-center {
+      position: absolute;
+      inset: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-bottom: 18px;
+      gap: 3px;
     }
 
-    /* Aura rings behind avatar */
-    .avatar-aura {
-      position: absolute;
-      inset: -20px;
-      border-radius: 50%;
-      opacity: 0;
-      transition: opacity 0.8s, box-shadow 0.8s;
+    .ring-lv {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      letter-spacing: -0.04em;
     }
 
-    .warrior-svg {
-      width: 160px;
-      height: 200px;
-      transition: filter 0.8s;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* CSS variables per element class */
-    .warrior-svg .el-body     { fill: var(--w-body); }
-    .warrior-svg .el-armor    { fill: var(--w-armor); }
-    .warrior-svg .el-accent   { fill: var(--w-accent); }
-    .warrior-svg .el-eye      { fill: var(--w-eye); }
-    .warrior-svg .el-staff    { fill: var(--w-staff); }
-    .warrior-svg .el-gem      { fill: var(--w-gem); }
-    .warrior-svg .el-boot     { fill: var(--w-boot); }
-    .warrior-svg .el-hood     { fill: var(--w-hood); }
-    .warrior-svg .el-particle { opacity: 0; }
-    .warrior-svg .el-aura-ring { opacity: 0; fill: none; stroke: var(--w-gem); }
-
-    /* Stage 1 — L'Apprenti */
-    #avatar-container.stage-1 {
-      --w-body:   #28283c;
-      --w-armor:  #1c1c2e;
-      --w-accent: #3a3a50;
-      --w-eye:    #5a5a70;
-      --w-staff:  #444458;
-      --w-gem:    #5a5a70;
-      --w-boot:   #181824;
-      --w-hood:   #20202e;
-    }
-    #avatar-container.stage-1 .warrior-svg { filter: none; opacity: 0.8; }
-
-    /* Stage 2 — Le Disciple */
-    #avatar-container.stage-2 {
-      --w-body:   #1c2e60;
-      --w-armor:  #243270;
-      --w-accent: #3a5cc0;
-      --w-eye:    #70aaff;
-      --w-staff:  #2858c0;
-      --w-gem:    #60a0ff;
-      --w-boot:   #101830;
-      --w-hood:   #0e1a45;
-    }
-    #avatar-container.stage-2 .warrior-svg {
-      filter: drop-shadow(0 0 10px rgba(56,120,232,0.55));
-    }
-    #avatar-container.stage-2 .avatar-aura {
-      opacity: 1;
-      box-shadow: 0 0 40px 10px rgba(56,120,232,0.12);
-    }
-    #avatar-container.stage-2 .el-particle { opacity: 0.35; fill: #60a0ff; }
-
-    /* Stage 3 — Le Maître */
-    #avatar-container.stage-3 {
-      --w-body:   #4a2e12;
-      --w-armor:  #5c3818;
-      --w-accent: #b07828;
-      --w-eye:    #ffd060;
-      --w-staff:  #c09028;
-      --w-gem:    #ffe060;
-      --w-boot:   #2a1608;
-      --w-hood:   #2e1a08;
-    }
-    #avatar-container.stage-3 .warrior-svg {
-      filter: drop-shadow(0 0 16px rgba(220,160,40,0.65));
-    }
-    #avatar-container.stage-3 .avatar-aura {
-      opacity: 1;
-      box-shadow: 0 0 60px 15px rgba(200,150,32,0.16);
-    }
-    #avatar-container.stage-3 .el-particle {
-      opacity: 0.65;
-      fill: #ffd060;
-      animation: pt-float 3s ease-in-out infinite;
-    }
-    #avatar-container.stage-3 .el-aura-ring { opacity: 0.15; stroke-width: 1; }
-
-    /* Stage 4 — La Légende */
-    #avatar-container.stage-4 {
-      --w-body:   #7a4818;
-      --w-armor:  #906028;
-      --w-accent: #e0a030;
-      --w-eye:    #ffffff;
-      --w-staff:  #d09428;
-      --w-gem:    #ffe870;
-      --w-boot:   #3a1e04;
-      --w-hood:   #3c1e04;
-    }
-    #avatar-container.stage-4 .warrior-svg {
-      filter:
-        drop-shadow(0 0 20px rgba(255,210,60,0.8))
-        drop-shadow(0 0 50px rgba(255,180,40,0.4));
-      animation: divine-pulse 2.5s ease-in-out infinite;
-    }
-    #avatar-container.stage-4 .avatar-aura {
-      opacity: 1;
-      box-shadow: 0 0 80px 20px rgba(220,170,30,0.2);
-    }
-    #avatar-container.stage-4 .el-particle {
-      opacity: 0.9;
-      fill: #ffe870;
-      animation: pt-float 2s ease-in-out infinite;
-    }
-    #avatar-container.stage-4 .el-aura-ring { opacity: 0.3; stroke-width: 1.5; }
-
-    .el-particle.p2 { animation-delay: 0.5s; }
-    .el-particle.p3 { animation-delay: 1s; }
-    .el-particle.p4 { animation-delay: 1.5s; }
-    .el-particle.p5 { animation-delay: 2s; }
-    .el-particle.p6 { animation-delay: 2.5s; }
-
-    @keyframes pt-float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-6px); }
-    }
-
-    @keyframes divine-pulse {
-      0%, 100% {
-        filter: drop-shadow(0 0 20px rgba(255,210,60,0.8)) drop-shadow(0 0 50px rgba(255,180,40,0.4));
-      }
-      50% {
-        filter: drop-shadow(0 0 30px rgba(255,220,80,1)) drop-shadow(0 0 70px rgba(255,190,50,0.6));
-      }
-    }
-
-    /* === Character info === */
-    .char-name {
-      font-family: var(--font-hero);
-      font-size: 1.5rem;
-      letter-spacing: 0.15em;
-      color: var(--gold-bright);
-      text-shadow: 0 0 30px rgba(201,164,64,0.5), 0 2px 4px rgba(0,0,0,0.6);
-      margin-bottom: 4px;
-      text-align: center;
-    }
-
-    .char-level {
-      font-family: var(--font-title);
-      font-size: 0.72rem;
-      letter-spacing: 0.25em;
+    .ring-stage {
+      font-size: 0.68rem;
+      font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
-      margin-bottom: 3px;
-      text-align: center;
-    }
-
-    .char-stage {
-      font-family: var(--font-title);
-      font-size: 0.78rem;
-      letter-spacing: 0.15em;
-      color: var(--gold-dim);
-      margin-bottom: 14px;
-      text-align: center;
-    }
-
-    .xp-wrap {
-      width: 230px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      align-items: center;
-    }
-
-    .xp-track {
-      width: 100%;
-      height: 5px;
-      background: var(--border);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .xp-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
-      border-radius: 3px;
-      transition: width 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      position: relative;
-    }
-
-    .xp-bar::after {
-      content: '';
-      position: absolute;
-      right: -4px;
-      top: -2px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--gold-bright);
-      box-shadow: 0 0 8px var(--gold-bright);
-      opacity: 0.9;
-    }
-
-    .xp-label {
-      font-size: 0.65rem;
-      color: var(--muted);
       letter-spacing: 0.1em;
-      font-family: var(--font-title);
+      transition: color 0.5s;
     }
 
-    /* ============================
-       DAY DIVIDER
-    ============================ */
-    .day-divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 16px 0 18px;
+    .xp-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
     }
 
-    .day-divider::before, .day-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border-b), transparent);
+    /* Stage label colour matches ring */
+    [data-stage="2"] .ring-stage { color: #007aff; }
+    [data-stage="3"] .ring-stage { color: #ff9f0a; }
+    [data-stage="4"] .ring-stage { color: #ff375f; }
+
+    /* ── DATE ─────────────────────── */
+    .day-row {
+      margin-bottom: 16px;
     }
 
     .day-text {
-      font-family: var(--font-title);
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
+      font-size: 0.78rem;
+      font-weight: 600;
       color: var(--muted);
-      white-space: nowrap;
-      text-transform: uppercase;
+      text-transform: capitalize;
     }
 
-    /* ============================
-       QUEST CARDS
-    ============================ */
-    .quests { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+    /* ── QUESTS ───────────────────── */
+    .quests {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
 
     .quest-card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      position: relative;
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: var(--sh);
       overflow: hidden;
-      transition: border-color 0.35s, box-shadow 0.35s;
-      --qc: var(--muted);
+      border: 1.5px solid transparent;
+      transition: border-color 0.3s;
     }
 
     .quest-card[data-quest="corps"]  { --qc: var(--corps); }
     .quest-card[data-quest="esprit"] { --qc: var(--esprit); }
     .quest-card[data-quest="focus"]  { --qc: var(--focus); }
 
-    .quest-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--qc);
-      border-radius: 3px 0 0 3px;
-    }
+    .quest-card.completed { border-color: var(--qc); }
 
-    .quest-card.completed {
-      border-color: var(--qc);
-      box-shadow: 0 0 22px -8px var(--qc);
-    }
-
-    .quest-card.completed::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--qc) 0%, transparent 45%);
-      opacity: 0.055;
-      pointer-events: none;
-    }
-
-    .quest-card.timer-running {
-      border-color: var(--qc);
-      animation: card-pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes card-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 transparent; }
-      50%       { box-shadow: 0 0 14px -4px var(--qc); }
-    }
-
-    .q-icon {
-      width: 44px;
-      height: 44px;
-      flex-shrink: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+    .quest-inner {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
+      padding: 16px 16px 12px;
+      gap: 14px;
+    }
+
+    .q-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--qc);
+      flex-shrink: 0;
+      margin-top: 1px;
     }
 
     .q-info { flex: 1; min-width: 0; }
 
     .q-name {
-      font-family: var(--font-title);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      color: var(--qc);
-      text-transform: uppercase;
-      margin-bottom: 1px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
     }
 
-    .q-desc {
-      font-size: 0.75rem;
+    .q-sub {
+      font-size: 0.74rem;
       color: var(--muted);
-      margin-bottom: 8px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    .q-mini-track {
+    .q-action { flex-shrink: 0; }
+
+    .q-bar-row { padding: 0 16px 13px; }
+
+    .q-track {
       height: 3px;
-      background: var(--border);
+      background: var(--sep);
       border-radius: 2px;
       overflow: hidden;
     }
 
-    .q-mini-fill {
+    .q-fill {
       height: 100%;
       width: 0%;
       background: var(--qc);
@@ -482,229 +200,196 @@
       transition: width 1s linear;
     }
 
-    /* Action area */
-    .q-action { flex-shrink: 0; }
-
+    /* ── BUTTONS ──────────────────── */
     .btn-timer {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 3px;
-      padding: 9px 13px;
-      min-height: 48px;
-      min-width: 64px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      gap: 6px;
+      padding: 9px 15px;
+      min-height: 44px;
+      min-width: 88px;
+      background: var(--bg);
+      border: none;
+      border-radius: 12px;
       cursor: pointer;
-      color: var(--text);
-      transition: border-color 0.2s, background 0.2s;
-      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--qc);
+      justify-content: center;
     }
-
-    .btn-timer:hover { border-color: var(--qc); }
 
     .btn-timer.running {
-      border-color: var(--qc);
-      background: var(--surface);
+      background: color-mix(in srgb, var(--qc) 10%, white);
     }
-
-    .btn-timer .t-icon { font-size: 0.75rem; color: var(--qc); line-height: 1; }
-    .btn-timer .t-time { font-family: 'Courier New', monospace; font-size: 0.82rem; letter-spacing: 0.04em; }
 
     .btn-complete {
-      padding: 10px 14px;
-      background: linear-gradient(135deg, var(--qc), rgba(255,255,255,0.1));
+      padding: 9px 16px;
+      min-height: 44px;
+      background: var(--qc);
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       color: #fff;
-      font-family: var(--font-title);
-      font-size: 0.62rem;
+      font-size: 0.82rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      animation: pulse-btn 1.5s ease-in-out infinite;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      animation: pop 1.2s ease-in-out infinite;
     }
 
-    @keyframes pulse-btn {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 transparent; }
-      50% { transform: scale(1.04); box-shadow: 0 0 16px -4px var(--qc); }
+    @keyframes pop {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.05); }
     }
 
     .badge-done {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 2px;
+      gap: 5px;
       padding: 9px 12px;
+      min-height: 44px;
+      font-size: 0.82rem;
+      font-weight: 600;
       color: var(--qc);
-      font-family: var(--font-title);
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
     }
 
-    .badge-done .check { font-size: 1.1rem; }
-
-    /* ============================
-       STATS ROW
-    ============================ */
+    /* ── STATS ────────────────────── */
     .stats-row {
       display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
     .stat-card {
       flex: 1;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 8px;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px 10px;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
+      box-shadow: var(--sh);
     }
 
     .stat-val {
-      font-family: var(--font-title);
-      font-size: 1.5rem;
+      display: block;
+      font-size: 1.7rem;
       font-weight: 700;
-      color: var(--gold-bright);
+      color: var(--text);
+      letter-spacing: -0.04em;
       line-height: 1;
+      margin-bottom: 4px;
     }
 
     .stat-lbl {
       font-size: 0.6rem;
+      font-weight: 600;
       color: var(--muted);
-      letter-spacing: 0.12em;
       text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
-    /* ============================
-       RECAP BUTTON
-    ============================ */
+    /* ── RECAP BUTTON ─────────────── */
     .btn-recap {
       width: 100%;
-      padding: 14px;
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--muted);
-      font-family: var(--font-title);
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+      padding: 16px;
+      background: var(--card);
+      border: none;
+      border-radius: 16px;
+      box-shadow: var(--sh);
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
+      text-align: center;
     }
 
-    .btn-recap:hover { border-color: var(--gold-dim); color: var(--gold); }
-
-    /* ============================
-       MODALS
-    ============================ */
+    /* ── RECAP MODAL ──────────────── */
     .modal-bg {
       position: fixed;
       inset: 0;
-      background: rgba(6,7,15,0.92);
+      background: rgba(0,0,0,0.35);
       z-index: 100;
       display: none;
       align-items: flex-end;
       justify-content: center;
-      backdrop-filter: blur(4px);
     }
-
     .modal-bg.open { display: flex; }
 
     .modal-sheet {
       width: 100%;
       max-width: 430px;
-      background: var(--surface);
-      border: 1px solid var(--border-b);
-      border-radius: 20px 20px 0 0;
-      padding: 24px 20px 40px;
-      position: relative;
-      max-height: 85vh;
+      background: var(--bg);
+      border-radius: 22px 22px 0 0;
+      padding: 12px 20px 52px;
+      max-height: 88vh;
       overflow-y: auto;
-      animation: slide-up 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+      animation: sheet-up 0.26s cubic-bezier(0.32, 0.72, 0, 1);
     }
 
-    @keyframes slide-up {
-      from { transform: translateY(40px); opacity: 0; }
-      to   { transform: translateY(0); opacity: 1; }
+    @keyframes sheet-up {
+      from { transform: translateY(28px); opacity: 0; }
+      to   { transform: none; opacity: 1; }
     }
 
     .modal-handle {
       width: 36px;
       height: 4px;
-      background: var(--border-b);
+      background: var(--sep);
       border-radius: 2px;
-      margin: 0 auto 20px;
+      margin: 0 auto 22px;
     }
 
     .modal-title {
-      font-family: var(--font-title);
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      letter-spacing: 0.2em;
-      color: var(--gold-bright);
+      color: var(--text);
       text-align: center;
       margin-bottom: 20px;
-      text-transform: uppercase;
     }
 
-    /* Weekly recap content */
     .week-grid {
       display: flex;
       gap: 6px;
-      margin-bottom: 24px;
-      justify-content: center;
+      margin-bottom: 20px;
     }
 
     .day-sq {
       flex: 1;
-      max-width: 48px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 4px;
-      text-align: center;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 9px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
     }
 
-    .day-sq.active  { border-color: var(--gold-dim); }
-    .day-sq.today   { border-color: var(--gold); background: rgba(201,164,64,0.05); }
-    .day-sq.future  { opacity: 0.3; }
+    .day-sq.active { background: #edf4ff; }
+    .day-sq.today  { background: #e0edff; box-shadow: 0 0 0 1.5px var(--accent); }
+    .day-sq.future { opacity: 0.3; }
 
     .day-lbl {
-      font-family: var(--font-title);
       font-size: 0.55rem;
-      letter-spacing: 0.1em;
+      font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
-    .day-dots { display: flex; flex-direction: column; gap: 3px; align-items: center; }
+    .day-dots {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: center;
+    }
 
     .d-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      border: 1px solid var(--border-b);
-      background: transparent;
-      transition: background 0.3s;
+      background: var(--sep);
     }
 
-    .d-dot.corps-done  { background: var(--corps);  border-color: var(--corps); }
-    .d-dot.esprit-done { background: var(--esprit); border-color: var(--esprit); }
-    .d-dot.focus-done  { background: var(--focus);  border-color: var(--focus); }
+    .d-dot.corps-done  { background: var(--corps); }
+    .d-dot.esprit-done { background: var(--esprit); }
+    .d-dot.focus-done  { background: var(--focus); }
 
     .recap-stats {
       display: grid;
@@ -713,59 +398,50 @@
     }
 
     .rs-card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px 13px;
     }
 
     .rs-val {
-      font-family: var(--font-title);
+      display: block;
       font-size: 1.3rem;
       font-weight: 700;
-      color: var(--gold-bright);
+      color: var(--text);
+      letter-spacing: -0.03em;
+      margin-bottom: 3px;
     }
 
     .rs-lbl {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
+      font-weight: 500;
       color: var(--muted);
-      letter-spacing: 0.08em;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .recap-msg {
       margin-top: 20px;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--muted);
-      line-height: 1.6;
-      font-style: italic;
+      line-height: 1.55;
     }
 
     .btn-close {
       width: 100%;
-      margin-top: 20px;
-      padding: 14px;
-      background: transparent;
-      border: 1px solid var(--border-b);
-      border-radius: 10px;
-      color: var(--muted);
-      font-family: var(--font-title);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      margin-top: 18px;
+      padding: 15px;
+      background: var(--card);
+      border: none;
+      border-radius: 14px;
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
     }
 
-    .btn-close:hover { border-color: var(--gold-dim); color: var(--gold); }
-
-    /* ============================
-       LEVEL-UP OVERLAY
-    ============================ */
+    /* ── LEVEL-UP ─────────────────── */
     #lu-overlay {
       position: fixed;
       inset: 0;
@@ -782,769 +458,525 @@
     }
 
     @keyframes lu-bg {
-      0%   { background: rgba(6,7,15,0); }
-      18%  { background: rgba(6,7,15,0.88); }
-      80%  { background: rgba(6,7,15,0.88); }
-      100% { background: rgba(6,7,15,0); }
+      0%   { background: rgba(0,0,0,0); }
+      18%  { background: rgba(0,0,0,0.72); }
+      80%  { background: rgba(0,0,0,0.72); }
+      100% { background: rgba(0,0,0,0); }
     }
 
     .lu-content {
       text-align: center;
-      animation: lu-in 3.8s forwards;
+      animation: lu-pop 3.8s forwards;
     }
 
-    @keyframes lu-in {
-      0%   { opacity: 0; transform: scale(0.7); }
-      18%  { opacity: 1; transform: scale(1.05); }
+    @keyframes lu-pop {
+      0%   { opacity: 0; transform: scale(0.8); }
+      18%  { opacity: 1; transform: scale(1.02); }
       25%  { transform: scale(1); }
       80%  { opacity: 1; }
-      100% { opacity: 0; transform: scale(1.1); }
+      100% { opacity: 0; }
     }
 
     .lu-label {
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-      letter-spacing: 0.4em;
-      color: var(--gold-dim);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .lu-number {
-      font-family: var(--font-hero);
-      font-size: 5rem;
-      color: var(--gold-bright);
+      font-size: 6.5rem;
+      font-weight: 800;
+      color: #fff;
       line-height: 1;
-      text-shadow: 0 0 40px rgba(255,215,106,0.8), 0 0 80px rgba(201,164,64,0.4);
+      letter-spacing: -0.06em;
       margin-bottom: 8px;
     }
 
     .lu-stage {
-      font-family: var(--font-title);
       font-size: 1rem;
-      letter-spacing: 0.25em;
-      color: var(--gold);
-      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.05em;
     }
 
-    .lu-rays {
-      position: absolute;
-      inset: -100px;
-      background: conic-gradient(from 0deg,
-        transparent 0deg, rgba(201,164,64,0.08) 10deg,
-        transparent 20deg, rgba(201,164,64,0.06) 30deg,
-        transparent 40deg, rgba(201,164,64,0.08) 50deg,
-        transparent 60deg, rgba(201,164,64,0.06) 70deg,
-        transparent 80deg, rgba(201,164,64,0.08) 90deg,
-        transparent 100deg, rgba(201,164,64,0.06) 110deg,
-        transparent 120deg, rgba(201,164,64,0.08) 130deg,
-        transparent 140deg, rgba(201,164,64,0.06) 150deg,
-        transparent 160deg, rgba(201,164,64,0.08) 170deg,
-        transparent 180deg, rgba(201,164,64,0.06) 190deg,
-        transparent 200deg, rgba(201,164,64,0.08) 210deg,
-        transparent 220deg, rgba(201,164,64,0.06) 230deg,
-        transparent 240deg, rgba(201,164,64,0.08) 250deg,
-        transparent 260deg, rgba(201,164,64,0.06) 270deg,
-        transparent 280deg, rgba(201,164,64,0.08) 290deg,
-        transparent 300deg, rgba(201,164,64,0.06) 310deg,
-        transparent 320deg, rgba(201,164,64,0.08) 330deg,
-        transparent 340deg, rgba(201,164,64,0.06) 350deg,
-        transparent 360deg
-      );
-      z-index: -1;
-      animation: spin-rays 6s linear infinite;
-    }
-
-    @keyframes spin-rays { to { transform: rotate(360deg); } }
-
-    /* ============================
-       TOAST
-    ============================ */
+    /* ── TOAST ────────────────────── */
     #toast {
       position: fixed;
       bottom: 28px;
       left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--surface2);
-      border: 1px solid var(--gold-dim);
-      border-radius: 8px;
-      padding: 11px 22px;
-      font-family: var(--font-title);
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      color: var(--gold);
-      z-index: 300;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: translateX(-50%) translateY(72px);
+      background: #1c1c1e;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 11px 20px;
+      border-radius: 22px;
       white-space: nowrap;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+      z-index: 300;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     #toast.show { transform: translateX(-50%) translateY(0); }
-
-    /* ============================
-       RESPONSIVE
-    ============================ */
-    @media (min-width: 430px) {
-      .app { padding-top: 16px; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- === BACKGROUND === -->
-  <div class="bg-layer bg-gradient"></div>
-  <div class="bg-layer bg-grid"></div>
-  <div class="bg-layer" id="particles"></div>
-  <div class="bg-layer bg-vignette"></div>
-  <div class="bg-layer">
-    <svg class="bg-mountains" viewBox="0 0 800 200" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 200 L180 70 L300 130 L450 20 L600 100 L720 55 L800 110 L800 200Z" fill="#0a0c1e" opacity="0.7"/>
-      <path d="M0 200 L120 100 L250 155 L380 60 L520 130 L660 75 L800 140 L800 200Z" fill="#070818" opacity="0.85"/>
-    </svg>
+<div class="app">
+
+  <!-- RING PROGRESS -->
+  <div class="ring-section" id="ring-section" data-stage="1">
+    <div class="ring-wrap">
+      <svg class="ring-svg" viewBox="0 0 140 140">
+        <circle class="ring-track" cx="70" cy="70" r="62"/>
+        <circle class="ring-fill"  cx="70" cy="70" r="62" id="xp-ring"/>
+      </svg>
+      <div class="ring-center">
+        <span class="ring-lv"    id="ring-level">1</span>
+        <span class="ring-stage" id="ring-stage">Apprenti</span>
+      </div>
+    </div>
+    <div class="xp-sub" id="xp-label">0 / 150 XP</div>
   </div>
 
-  <!-- === APP === -->
-  <div class="app">
+  <!-- DATE -->
+  <div class="day-row">
+    <span class="day-text" id="day-text">—</span>
+  </div>
 
-    <!-- HERO -->
-    <header class="hero">
-      <div class="avatar-wrap stage-1" id="avatar-container">
-        <div class="avatar-aura"></div>
-        <!-- Warrior SVG -->
-        <svg class="warrior-svg" viewBox="0 0 160 210" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Aura ring (stage 3-4) -->
-          <ellipse class="el-aura-ring" cx="76" cy="145" rx="68" ry="58"/>
+  <!-- QUESTS -->
+  <div class="quests">
 
-          <!-- Staff (angled behind figure) -->
-          <rect class="el-staff" x="112" y="12" width="7" height="185" rx="3.5" transform="rotate(6,115.5,104.5)"/>
-          <!-- Staff top ring -->
-          <circle class="el-staff" cx="122" cy="20" r="10" fill="none" stroke-width="3.5" style="fill:none;stroke:var(--w-staff);"/>
-          <!-- Staff gem -->
-          <polygon class="el-gem" points="122,6 128,16 122,26 116,16"/>
-
-          <!-- Hood/cape behind head -->
-          <path class="el-hood" d="M76 32 C56 40 44 70 46 92 L108 92 C110 70 98 40 76 32Z" opacity="0.75"/>
-
-          <!-- Head -->
-          <ellipse class="el-body" cx="76" cy="72" rx="24" ry="22"/>
-
-          <!-- Ears -->
-          <ellipse class="el-body" cx="53" cy="68" rx="6" ry="8"/>
-          <ellipse class="el-body" cx="99" cy="68" rx="6" ry="8"/>
-
-          <!-- Headband -->
-          <rect class="el-accent" x="54" y="66" width="44" height="7" rx="3.5"/>
-          <!-- Crown gem -->
-          <polygon class="el-gem" points="76,59 79,66 73,66"/>
-
-          <!-- Eyes -->
-          <ellipse class="el-eye" cx="67" cy="73" rx="4.5" ry="3.5"/>
-          <ellipse class="el-eye" cx="85" cy="73" rx="4.5" ry="3.5"/>
-          <!-- Pupil glow -->
-          <ellipse cx="67" cy="73" rx="2" ry="1.5" fill="white" opacity="0.3"/>
-          <ellipse cx="85" cy="73" rx="2" ry="1.5" fill="white" opacity="0.3"/>
-
-          <!-- Neck -->
-          <rect class="el-body" x="68" y="92" width="16" height="14" rx="3"/>
-
-          <!-- Shoulders (pauldrons) -->
-          <ellipse class="el-armor" cx="51" cy="108" rx="12" ry="8" transform="rotate(-12,51,108)"/>
-          <ellipse class="el-armor" cx="101" cy="108" rx="12" ry="8" transform="rotate(12,101,108)"/>
-
-          <!-- Torso (robe) -->
-          <path class="el-body" d="M52 106 Q44 135 44 190 L108 190 Q108 135 100 106Z"/>
-
-          <!-- Armor breastplate -->
-          <path class="el-armor" d="M62 110 L90 110 L87 170 L65 170Z"/>
-          <!-- Armor detail lines -->
-          <line x1="76" y1="112" x2="76" y2="168" stroke="var(--w-accent)" stroke-width="1.2" opacity="0.6"/>
-          <line x1="64" y1="138" x2="88" y2="138" stroke="var(--w-accent)" stroke-width="1" opacity="0.5"/>
-          <line x1="65" y1="155" x2="87" y2="155" stroke="var(--w-accent)" stroke-width="1" opacity="0.4"/>
-
-          <!-- Belt -->
-          <rect class="el-accent" x="48" y="186" width="56" height="9" rx="3"/>
-          <rect class="el-gem" x="70" y="186" width="12" height="9" rx="3"/>
-
-          <!-- Left arm (extended forward) -->
-          <path class="el-body" d="M52 112 L36 175 L50 180 L62 122Z"/>
-          <ellipse class="el-body" cx="42" cy="179" rx="8" ry="7"/>
-
-          <!-- Right arm (bent, holding staff area) -->
-          <path class="el-body" d="M100 112 L116 158 L104 164 L90 122Z"/>
-          <ellipse class="el-body" cx="111" cy="162" rx="8" ry="7"/>
-
-          <!-- Legs -->
-          <rect class="el-body" x="52" y="192" width="18" height="55" rx="5"/>
-          <rect class="el-body" x="74" y="192" width="18" height="55" rx="5"/>
-
-          <!-- Boots -->
-          <path class="el-boot" d="M49 238 Q44 250 56 254 L72 253 L72 240Z"/>
-          <path class="el-boot" d="M103 238 Q108 250 96 254 L80 253 L80 240Z"/>
-
-          <!-- Cape folds (behind) -->
-          <path class="el-hood" d="M46 128 Q28 170 32 200 L50 200 L56 168Z" opacity="0.5"/>
-          <path class="el-hood" d="M106 128 Q124 170 120 200 L102 200 L96 168Z" opacity="0.5"/>
-
-          <!-- Particles (visible on stage 3-4) -->
-          <circle class="el-particle"    cx="28"  cy="95"  r="2.5"/>
-          <circle class="el-particle p2" cx="128" cy="75"  r="2"/>
-          <circle class="el-particle p3" cx="55"  cy="38"  r="2.2"/>
-          <circle class="el-particle p4" cx="110" cy="190" r="1.8"/>
-          <circle class="el-particle p5" cx="22"  cy="155" r="2"/>
-          <circle class="el-particle p6" cx="132" cy="140" r="2.5"/>
-        </svg>
-      </div>
-
-      <h1 class="char-name">MATTHIEU</h1>
-      <div class="char-level">NIVEAU <span id="char-level">1</span></div>
-      <div class="char-stage" id="char-stage">L'Apprenti</div>
-
-      <div class="xp-wrap">
-        <div class="xp-track">
-          <div class="xp-bar" id="xp-bar"></div>
-        </div>
-        <div class="xp-label" id="xp-label">0 / 150 XP</div>
-      </div>
-    </header>
-
-    <!-- DAY DIVIDER -->
-    <div class="day-divider">
-      <span class="day-text" id="day-text">Chargement…</span>
-    </div>
-
-    <!-- QUESTS -->
-    <section class="quests">
-
-      <div class="quest-card" data-quest="corps" id="quest-corps">
-        <div class="q-icon">⚔️</div>
+    <div class="quest-card" data-quest="corps" id="quest-corps">
+      <div class="quest-inner">
+        <div class="q-dot"></div>
         <div class="q-info">
-          <div class="q-name">Corps</div>
-          <div class="q-desc">Séance physique · 20 min</div>
-          <div class="q-mini-track"><div class="q-mini-fill" id="fill-corps"></div></div>
+          <div class="q-name">Sport</div>
+          <div class="q-sub">Séance physique · 20 min</div>
         </div>
         <div class="q-action" id="action-corps"></div>
       </div>
+      <div class="q-bar-row">
+        <div class="q-track"><div class="q-fill" id="fill-corps"></div></div>
+      </div>
+    </div>
 
-      <div class="quest-card" data-quest="esprit" id="quest-esprit">
-        <div class="q-icon">📖</div>
+    <div class="quest-card" data-quest="esprit" id="quest-esprit">
+      <div class="quest-inner">
+        <div class="q-dot"></div>
         <div class="q-info">
-          <div class="q-name">Esprit</div>
-          <div class="q-desc">Lecture & apprentissage · 15 min</div>
-          <div class="q-mini-track"><div class="q-mini-fill" id="fill-esprit"></div></div>
+          <div class="q-name">Lecture</div>
+          <div class="q-sub">Apprentissage · 15 min</div>
         </div>
         <div class="q-action" id="action-esprit"></div>
       </div>
+      <div class="q-bar-row">
+        <div class="q-track"><div class="q-fill" id="fill-esprit"></div></div>
+      </div>
+    </div>
 
-      <div class="quest-card" data-quest="focus" id="quest-focus">
-        <div class="q-icon">🎯</div>
+    <div class="quest-card" data-quest="focus" id="quest-focus">
+      <div class="quest-inner">
+        <div class="q-dot"></div>
         <div class="q-info">
-          <div class="q-name">Focus</div>
-          <div class="q-desc">Deep work · 30 min</div>
-          <div class="q-mini-track"><div class="q-mini-fill" id="fill-focus"></div></div>
+          <div class="q-name">Deep work</div>
+          <div class="q-sub">Concentration · 30 min</div>
         </div>
         <div class="q-action" id="action-focus"></div>
       </div>
-
-    </section>
-
-    <!-- STATS -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <span class="stat-val" id="stat-streak">0</span>
-        <span class="stat-lbl">🔥 Série</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-val" id="stat-days">0</span>
-        <span class="stat-lbl">📅 Jours</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-val" id="stat-xp">0</span>
-        <span class="stat-lbl">⚡ XP Total</span>
+      <div class="q-bar-row">
+        <div class="q-track"><div class="q-fill" id="fill-focus"></div></div>
       </div>
     </div>
 
-    <!-- RECAP BUTTON -->
-    <button class="btn-recap" onclick="openRecap()">◈ &nbsp;RÉCAP DE LA SEMAINE</button>
+  </div>
 
-  </div><!-- .app -->
-
-  <!-- RECAP MODAL -->
-  <div class="modal-bg" id="recap-modal">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      <div class="modal-title">◈ &nbsp;Semaine en cours</div>
-      <div id="recap-body"></div>
-      <button class="btn-close" onclick="closeRecap()">FERMER</button>
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-val" id="stat-streak">0</span>
+      <span class="stat-lbl">🔥 Série</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="stat-days">0</span>
+      <span class="stat-lbl">📅 Jours</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="stat-xp">0</span>
+      <span class="stat-lbl">⚡ XP</span>
     </div>
   </div>
 
-  <!-- LEVEL-UP OVERLAY -->
-  <div id="lu-overlay">
-    <div class="lu-content" id="lu-content">
-      <div class="lu-rays"></div>
-      <div class="lu-label">Niveau supérieur</div>
-      <div class="lu-number" id="lu-number">2</div>
-      <div class="lu-stage" id="lu-stage"></div>
-    </div>
+  <!-- RECAP -->
+  <button class="btn-recap" onclick="openRecap()">Récap de la semaine →</button>
+
+</div>
+
+<!-- RECAP MODAL -->
+<div class="modal-bg" id="recap-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Cette semaine</div>
+    <div id="recap-body"></div>
+    <button class="btn-close" onclick="closeRecap()">Fermer</button>
   </div>
+</div>
 
-  <!-- TOAST -->
-  <div id="toast"></div>
+<!-- LEVEL-UP -->
+<div id="lu-overlay">
+  <div class="lu-content">
+    <div class="lu-label">Niveau</div>
+    <div class="lu-number" id="lu-number">2</div>
+    <div class="lu-stage"  id="lu-stage"></div>
+  </div>
+</div>
 
-  <script>
-  /* =============================================
-     CONFIGURATION
-  ============================================= */
-  const QUESTS = {
-    corps:  { id: 'corps',  name: 'Corps',  minTime: 20 * 60, xp: 50 },
-    esprit: { id: 'esprit', name: 'Esprit', minTime: 15 * 60, xp: 40 },
-    focus:  { id: 'focus',  name: 'Focus',  minTime: 30 * 60, xp: 60 }
-  };
+<!-- TOAST -->
+<div id="toast"></div>
 
-  // Total XP needed to reach each level (index = level - 1)
-  const LEVEL_XP = [
-    0, 150, 350, 600, 1000, 1500, 2100, 2800, 3600, 4600,
-    5800, 7200, 8800, 10600, 12800, 15300, 18100, 21200, 24600, 28400,
-    32500, 37000, 42000, 47500, 53500, 60000, 67500, 76000, 85000, 95000
-  ];
+<script>
+/* =============================================
+   CONFIG
+============================================= */
+const QUESTS = {
+  corps:  { id: 'corps',  name: 'Sport',     minTime: 20 * 60, xp: 50 },
+  esprit: { id: 'esprit', name: 'Lecture',   minTime: 15 * 60, xp: 40 },
+  focus:  { id: 'focus',  name: 'Deep work', minTime: 30 * 60, xp: 60 }
+};
 
-  const STAGE_LABELS = ['L\'Apprenti', 'Le Disciple', 'Le Maître', 'La Légende'];
-  const BONUS_ALL_XP = 30;
+const LEVEL_XP = [
+  0, 150, 350, 600, 1000, 1500, 2100, 2800, 3600, 4600,
+  5800, 7200, 8800, 10600, 12800, 15300, 18100, 21200, 24600, 28400,
+  32500, 37000, 42000, 47500, 53500, 60000, 67500, 76000, 85000, 95000
+];
 
-  /* =============================================
-     STATE
-  ============================================= */
-  const DEFAULT_TIMERS = () => ({
-    corps:  { running: false, elapsed: 0, startTs: null, completed: false },
-    esprit: { running: false, elapsed: 0, startTs: null, completed: false },
-    focus:  { running: false, elapsed: 0, startTs: null, completed: false }
-  });
+const STAGE_LABELS = ['Apprenti', 'Disciple', 'Maître', 'Légende'];
+const STAGE_COLORS = ['#8e8e93', '#007aff', '#ff9f0a', '#ff375f'];
+const RING_CIRC    = 2 * Math.PI * 62; // ≈ 389.56
+const BONUS_ALL_XP = 30;
 
-  let state;
-  const intervals = {};
+/* =============================================
+   STATE
+============================================= */
+const DEFAULT_TIMERS = () => ({
+  corps:  { running: false, elapsed: 0, startTs: null, completed: false },
+  esprit: { running: false, elapsed: 0, startTs: null, completed: false },
+  focus:  { running: false, elapsed: 0, startTs: null, completed: false }
+});
 
-  function loadState() {
-    try {
-      const raw = localStorage.getItem('rpg_v1');
-      if (raw) {
-        const s = JSON.parse(raw);
-        const today = getToday();
+let state;
+const intervals = {};
 
-        // Day changed: check streak, reset timers
-        if (s.lastDate && s.lastDate !== today) {
-          const yesterday = shiftDate(-1);
-          const hadActivity = (s.log[yesterday] || {}).any;
-          if (!hadActivity && s.streak > 0) s.streak = 0;
-          s.timers = DEFAULT_TIMERS();
-        }
-
-        s.lastDate = today;
-        return s;
+function loadState() {
+  try {
+    const raw = localStorage.getItem('rpg_v1');
+    if (raw) {
+      const s = JSON.parse(raw);
+      const today = getToday();
+      if (s.lastDate && s.lastDate !== today) {
+        const yesterday = shiftDate(-1);
+        const hadActivity = (s.log[yesterday] || {}).any;
+        if (!hadActivity && s.streak > 0) s.streak = 0;
+        s.timers = DEFAULT_TIMERS();
       }
-    } catch (_) {}
-
-    return {
-      totalXP: 0,
-      streak: 0,
-      totalDays: 0,
-      lastDate: getToday(),
-      log: {},      // { 'YYYY-MM-DD': { corps, esprit, focus, any, bonusAwarded, xp, corpsTime, espritTime, focusTime, firstCompleted } }
-      timers: DEFAULT_TIMERS()
-    };
-  }
-
-  function save() {
-    localStorage.setItem('rpg_v1', JSON.stringify(state));
-  }
-
-  /* =============================================
-     DATE UTILITIES
-  ============================================= */
-  function getToday() {
-    return new Date().toISOString().split('T')[0];
-  }
-
-  function shiftDate(days) {
-    const d = new Date();
-    d.setDate(d.getDate() + days);
-    return d.toISOString().split('T')[0];
-  }
-
-  function todayLog() {
-    const t = getToday();
-    if (!state.log[t]) {
-      state.log[t] = { corps: false, esprit: false, focus: false, any: false,
-                       bonusAwarded: false, xp: 0, firstCompleted: false,
-                       corpsTime: 0, espritTime: 0, focusTime: 0 };
+      s.lastDate = today;
+      return s;
     }
-    return state.log[t];
-  }
+  } catch (_) {}
+  return { totalXP: 0, streak: 0, totalDays: 0, lastDate: getToday(),
+           log: {}, timers: DEFAULT_TIMERS() };
+}
 
-  function fmt(secs) {
-    const m = Math.floor(secs / 60), s = secs % 60;
-    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  }
+function save() { localStorage.setItem('rpg_v1', JSON.stringify(state)); }
 
-  function fmtDuration(secs) {
-    const h = Math.floor(secs / 3600);
-    const m = Math.floor((secs % 3600) / 60);
-    if (h > 0) return `${h}h${String(m).padStart(2,'0')}`;
-    return `${m} min`;
-  }
+/* =============================================
+   DATE UTILS
+============================================= */
+function getToday() { return new Date().toISOString().split('T')[0]; }
 
-  /* =============================================
-     LEVEL / XP
-  ============================================= */
-  function getLevel(xp) {
-    for (let i = LEVEL_XP.length - 1; i >= 0; i--) {
-      if (xp >= LEVEL_XP[i]) return i + 1;
-    }
-    return 1;
-  }
+function shiftDate(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toISOString().split('T')[0];
+}
 
-  function getLevelProgress(xp) {
-    const lv = getLevel(xp);
-    const cur  = LEVEL_XP[lv - 1] || 0;
-    const next = LEVEL_XP[lv]     || LEVEL_XP[LEVEL_XP.length - 1] + 10000;
-    const prog = xp - cur;
-    const total = next - cur;
-    return { prog, total, pct: Math.min(100, (prog / total) * 100), lv };
-  }
+function todayLog() {
+  const t = getToday();
+  if (!state.log[t]) state.log[t] = {
+    corps: false, esprit: false, focus: false, any: false,
+    bonusAwarded: false, xp: 0, firstCompleted: false,
+    corpsTime: 0, espritTime: 0, focusTime: 0
+  };
+  return state.log[t];
+}
 
-  function getStage(lv) {
-    if (lv >= 30) return 4;
-    if (lv >= 15) return 3;
-    if (lv >= 5)  return 2;
-    return 1;
-  }
+function fmt(secs) {
+  const m = Math.floor(secs / 60), s = secs % 60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
 
-  /* =============================================
-     TIMER LOGIC
-  ============================================= */
-  function getElapsed(id) {
-    const t = state.timers[id];
-    if (!t.running || !t.startTs) return t.elapsed;
-    return t.elapsed + Math.floor((Date.now() - t.startTs) / 1000);
-  }
+function fmtDuration(secs) {
+  const h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60);
+  return h > 0 ? `${h}h${String(m).padStart(2,'0')}` : `${m} min`;
+}
 
-  function toggleTimer(id) {
-    const t = state.timers[id];
-    if (t.completed) return;
+/* =============================================
+   LEVEL / XP
+============================================= */
+function getLevel(xp) {
+  for (let i = LEVEL_XP.length - 1; i >= 0; i--)
+    if (xp >= LEVEL_XP[i]) return i + 1;
+  return 1;
+}
 
-    if (t.running) {
-      t.elapsed = getElapsed(id);
-      t.running  = false;
-      t.startTs  = null;
-      clearInterval(intervals[id]);
-      delete intervals[id];
-    } else {
-      t.running = true;
-      t.startTs = Date.now();
-      intervals[id] = setInterval(() => renderQuestCard(id), 1000);
-    }
+function getLevelProgress(xp) {
+  const lv   = getLevel(xp);
+  const cur  = LEVEL_XP[lv - 1] || 0;
+  const next = LEVEL_XP[lv] || LEVEL_XP[LEVEL_XP.length - 1] + 10000;
+  const prog = xp - cur, total = next - cur;
+  return { prog, total, pct: Math.min(100, prog / total * 100), lv };
+}
 
-    save();
-    renderQuestCard(id);
-  }
+function getStage(lv) {
+  if (lv >= 30) return 4;
+  if (lv >= 15) return 3;
+  if (lv >= 5)  return 2;
+  return 1;
+}
 
-  function completeQuest(id) {
-    const t = state.timers[id];
-    if (t.completed) return;
+/* =============================================
+   TIMER ENGINE
+============================================= */
+function getElapsed(id) {
+  const t = state.timers[id];
+  if (!t.running || !t.startTs) return t.elapsed;
+  return t.elapsed + Math.floor((Date.now() - t.startTs) / 1000);
+}
 
-    t.elapsed = getElapsed(id);
+function toggleTimer(id) {
+  const t = state.timers[id];
+  if (t.completed) return;
+  if (t.running) {
+    t.elapsed  = getElapsed(id);
     t.running  = false;
     t.startTs  = null;
     clearInterval(intervals[id]);
     delete intervals[id];
-    t.completed = true;
+  } else {
+    t.running = true;
+    t.startTs = Date.now();
+    intervals[id] = setInterval(() => renderQuestCard(id), 1000);
+  }
+  save();
+  renderQuestCard(id);
+}
 
-    const log = todayLog();
-    log[id] = true;
-    log.any  = true;
-    log[`${id}Time`] = t.elapsed;
+function completeQuest(id) {
+  const t = state.timers[id];
+  if (t.completed) return;
 
-    // XP
-    const prevLv = getLevel(state.totalXP);
-    const xpEarned = QUESTS[id].xp;
-    state.totalXP += xpEarned;
-    log.xp = (log.xp || 0) + xpEarned;
+  t.elapsed = getElapsed(id);
+  t.running = false; t.startTs = null;
+  clearInterval(intervals[id]); delete intervals[id];
+  t.completed = true;
 
-    // All-quests bonus
-    if (log.corps && log.esprit && log.focus && !log.bonusAwarded) {
-      state.totalXP += BONUS_ALL_XP;
-      log.xp += BONUS_ALL_XP;
-      log.bonusAwarded = true;
-      setTimeout(() => toast(`BONUS +${BONUS_ALL_XP} XP — Triple quête !`), 1400);
-    }
+  const log = todayLog();
+  log[id] = true; log.any = true; log[`${id}Time`] = t.elapsed;
 
-    // Streak / days (only on first completion of the day)
-    if (!log.firstCompleted) {
-      log.firstCompleted = true;
-      state.totalDays++;
-      state.streak++;
-    }
+  const prevLv = getLevel(state.totalXP);
+  state.totalXP += QUESTS[id].xp;
+  log.xp = (log.xp || 0) + QUESTS[id].xp;
 
-    save();
-
-    const newLv = getLevel(state.totalXP);
-    if (newLv > prevLv) setTimeout(() => showLevelUp(newLv, prevLv), 900);
-
-    toast(`+${xpEarned} XP — ${QUESTS[id].name} accomplie !`);
-    renderAll();
+  if (log.corps && log.esprit && log.focus && !log.bonusAwarded) {
+    state.totalXP += BONUS_ALL_XP;
+    log.xp += BONUS_ALL_XP;
+    log.bonusAwarded = true;
+    setTimeout(() => toast(`Bonus +${BONUS_ALL_XP} XP — Journée parfaite !`), 1400);
   }
 
-  /* =============================================
-     RENDER FUNCTIONS
-  ============================================= */
-  function renderQuestCard(id) {
-    const q = QUESTS[id];
-    const t = state.timers[id];
-    const elapsed = getElapsed(id);
-    const pct = Math.min(100, (elapsed / q.minTime) * 100);
-    const reached = elapsed >= q.minTime;
-
-    // Mini bar
-    const fill = document.getElementById(`fill-${id}`);
-    if (fill) fill.style.width = `${pct}%`;
-
-    // Card class
-    const card = document.getElementById(`quest-${id}`);
-    if (card) {
-      card.classList.toggle('completed', t.completed);
-      card.classList.toggle('timer-running', t.running && !t.completed);
-    }
-
-    // Action area
-    const area = document.getElementById(`action-${id}`);
-    if (!area) return;
-
-    if (t.completed) {
-      area.innerHTML = `
-        <div class="badge-done">
-          <span class="check">✦</span>
-          <span>${fmt(t.elapsed)}</span>
-        </div>`;
-    } else if (reached && t.running) {
-      area.innerHTML = `
-        <button class="btn-complete" onclick="completeQuest('${id}')">TERMINER</button>`;
-    } else {
-      const icon = t.running ? '⏸' : '▶';
-      area.innerHTML = `
-        <button class="btn-timer ${t.running ? 'running' : ''}" onclick="toggleTimer('${id}')">
-          <span class="t-icon">${icon}</span>
-          <span class="t-time">${fmt(elapsed)}</span>
-        </button>`;
-    }
+  if (!log.firstCompleted) {
+    log.firstCompleted = true;
+    state.totalDays++;
+    state.streak++;
   }
 
-  function renderHero() {
-    const { pct, prog, total, lv } = getLevelProgress(state.totalXP);
-    const stage = getStage(lv);
-    const prevStage = getStage(lv - 1);
+  save();
+  const newLv = getLevel(state.totalXP);
+  if (newLv > prevLv) setTimeout(() => showLevelUp(newLv, prevLv), 900);
 
-    const lvEl = document.getElementById('char-level');
-    if (lvEl) lvEl.textContent = lv;
+  toast(`+${QUESTS[id].xp} XP — ${QUESTS[id].name} !`);
+  renderAll();
+}
 
-    const stEl = document.getElementById('char-stage');
-    if (stEl) stEl.textContent = STAGE_LABELS[stage - 1];
+/* =============================================
+   RENDER
+============================================= */
+function renderQuestCard(id) {
+  const t       = state.timers[id];
+  const elapsed = getElapsed(id);
+  const pct     = Math.min(100, elapsed / QUESTS[id].minTime * 100);
+  const reached = elapsed >= QUESTS[id].minTime;
 
-    const bar = document.getElementById('xp-bar');
-    if (bar) bar.style.width = `${pct}%`;
+  const fill = document.getElementById(`fill-${id}`);
+  if (fill) fill.style.width = `${pct}%`;
 
-    const lbl = document.getElementById('xp-label');
-    if (lbl) lbl.textContent = `${prog} / ${total} XP`;
+  const card = document.getElementById(`quest-${id}`);
+  if (card) card.classList.toggle('completed', t.completed);
 
-    // Avatar stage
-    const av = document.getElementById('avatar-container');
-    if (av) {
-      av.classList.remove('stage-1','stage-2','stage-3','stage-4');
-      av.classList.add(`stage-${stage}`);
-    }
+  const area = document.getElementById(`action-${id}`);
+  if (!area) return;
+
+  if (t.completed) {
+    area.innerHTML = `<div class="badge-done">✓ ${fmt(t.elapsed)}</div>`;
+  } else if (reached && t.running) {
+    area.innerHTML = `<button class="btn-complete" onclick="completeQuest('${id}')">Terminer</button>`;
+  } else {
+    const icon = t.running ? '⏸' : '▶';
+    area.innerHTML = `<button class="btn-timer ${t.running ? 'running' : ''}" onclick="toggleTimer('${id}')">${icon} ${fmt(elapsed)}</button>`;
+  }
+}
+
+function renderHero() {
+  const { pct, prog, total, lv } = getLevelProgress(state.totalXP);
+  const stage = getStage(lv);
+
+  const lvEl = document.getElementById('ring-level');
+  if (lvEl) lvEl.textContent = lv;
+
+  const stEl = document.getElementById('ring-stage');
+  if (stEl) stEl.textContent = STAGE_LABELS[stage - 1];
+
+  const ring = document.getElementById('xp-ring');
+  if (ring) {
+    ring.style.strokeDashoffset = RING_CIRC * (1 - pct / 100);
+    ring.style.stroke = STAGE_COLORS[stage - 1];
   }
 
-  function renderStats() {
-    const el = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-    el('stat-streak', state.streak);
-    el('stat-days',   state.totalDays);
-    el('stat-xp',     state.totalXP);
-  }
+  const lbl = document.getElementById('xp-label');
+  if (lbl) lbl.textContent = `${prog} / ${total} XP`;
 
-  function renderDate() {
-    const el = document.getElementById('day-text');
-    if (!el) return;
-    const opts = { weekday: 'long', day: 'numeric', month: 'long' };
-    el.textContent = new Date().toLocaleDateString('fr-FR', opts).toUpperCase();
-  }
+  const section = document.getElementById('ring-section');
+  if (section) section.dataset.stage = stage;
+}
 
-  function renderAll() {
-    renderHero();
-    renderStats();
-    Object.keys(QUESTS).forEach(id => renderQuestCard(id));
-  }
+function renderStats() {
+  const el = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  el('stat-streak', state.streak);
+  el('stat-days',   state.totalDays);
+  el('stat-xp',     state.totalXP);
+}
 
-  /* =============================================
-     LEVEL-UP
-  ============================================= */
-  function showLevelUp(newLv, prevLv) {
-    const stage    = getStage(newLv);
-    const prevStage= getStage(prevLv);
-    const stageChanged = stage !== prevStage;
+function renderDate() {
+  const el = document.getElementById('day-text');
+  if (el) el.textContent = new Date().toLocaleDateString('fr-FR',
+    { weekday: 'long', day: 'numeric', month: 'long' });
+}
 
-    document.getElementById('lu-number').textContent = newLv;
-    document.getElementById('lu-stage').textContent  = stageChanged ? STAGE_LABELS[stage - 1] : '';
+function renderAll() {
+  renderHero();
+  renderStats();
+  Object.keys(QUESTS).forEach(id => renderQuestCard(id));
+}
 
-    const ov = document.getElementById('lu-overlay');
-    ov.classList.remove('show');
-    void ov.offsetWidth; // reflow
-    ov.classList.add('show');
-    ov.style.pointerEvents = 'all';
+/* =============================================
+   LEVEL-UP
+============================================= */
+function showLevelUp(newLv, prevLv) {
+  const stage = getStage(newLv);
+  const stageChanged = stage !== getStage(prevLv);
+  document.getElementById('lu-number').textContent = newLv;
+  document.getElementById('lu-stage').textContent  = stageChanged ? STAGE_LABELS[stage - 1] : '';
+  const ov = document.getElementById('lu-overlay');
+  ov.classList.remove('show'); void ov.offsetWidth;
+  ov.classList.add('show'); ov.style.pointerEvents = 'all';
+  setTimeout(() => { ov.classList.remove('show'); ov.style.pointerEvents = 'none'; }, 3900);
+}
 
-    setTimeout(() => {
-      ov.classList.remove('show');
-      ov.style.pointerEvents = 'none';
-    }, 3900);
-  }
+/* =============================================
+   RECAP
+============================================= */
+function openRecap()  { buildRecap(); document.getElementById('recap-modal').classList.add('open'); }
+function closeRecap() { document.getElementById('recap-modal').classList.remove('open'); }
 
-  /* =============================================
-     WEEKLY RECAP
-  ============================================= */
-  function openRecap() {
-    buildRecap();
-    document.getElementById('recap-modal').classList.add('open');
-  }
+function buildRecap() {
+  const today     = getToday();
+  const dow       = new Date().getDay();
+  const mondayOff = dow === 0 ? -6 : 1 - dow;
+  const LABELS    = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  const days      = Array.from({length: 7}, (_, i) => shiftDate(mondayOff + i));
 
-  function closeRecap() {
-    document.getElementById('recap-modal').classList.remove('open');
-  }
+  let wXP = 0, wQ = 0, wCorps = 0, wEsprit = 0, wFocus = 0;
 
-  function buildRecap() {
-    const today = getToday();
-    const dow = new Date().getDay(); // 0=Sun
-    const mondayOff = dow === 0 ? -6 : 1 - dow;
+  const squares = days.map((d, i) => {
+    const log = state.log[d] || {};
+    const done = (log.corps?1:0) + (log.esprit?1:0) + (log.focus?1:0);
+    wXP += log.xp || 0; wQ += done;
+    wCorps  += log.corpsTime  || 0;
+    wEsprit += log.espritTime || 0;
+    wFocus  += log.focusTime  || 0;
+    const cls = d === today ? 'today' : d > today ? 'future' : done > 0 ? 'active' : '';
+    return `<div class="day-sq ${cls}">
+      <span class="day-lbl">${LABELS[i]}</span>
+      <div class="day-dots">
+        <span class="d-dot ${log.corps  ? 'corps-done'  : ''}"></span>
+        <span class="d-dot ${log.esprit ? 'esprit-done' : ''}"></span>
+        <span class="d-dot ${log.focus  ? 'focus-done'  : ''}"></span>
+      </div></div>`;
+  }).join('');
 
-    const LABELS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-    const days = Array.from({length:7}, (_,i) => shiftDate(mondayOff + i));
+  const msgs = [
+    'La régularité bat l\'intensité.',
+    'Chaque session compte.',
+    'Discipline = liberté.',
+    'Tu construis quelque chose de réel.',
+    'Le corps et l\'esprit, ensemble.'
+  ];
 
-    let wXP = 0, wQ = 0, wCorps = 0, wEsprit = 0, wFocus = 0;
+  document.getElementById('recap-body').innerHTML = `
+    <div class="week-grid">${squares}</div>
+    <div class="recap-stats">
+      <div class="rs-card"><span class="rs-val">${wXP}</span><span class="rs-lbl">⚡ XP</span></div>
+      <div class="rs-card"><span class="rs-val">${wQ}</span><span class="rs-lbl">Quêtes</span></div>
+      <div class="rs-card"><span class="rs-val">${fmtDuration(wFocus)}</span><span class="rs-lbl">Deep work</span></div>
+      <div class="rs-card"><span class="rs-val">${fmtDuration(wCorps)}</span><span class="rs-lbl">Sport</span></div>
+      <div class="rs-card"><span class="rs-val">${fmtDuration(wEsprit)}</span><span class="rs-lbl">Lecture</span></div>
+      <div class="rs-card"><span class="rs-val">${state.streak}</span><span class="rs-lbl">🔥 Série</span></div>
+    </div>
+    <div class="recap-msg">${msgs[Math.floor(Math.random() * msgs.length)]}</div>`;
+}
 
-    const squares = days.map((d, i) => {
-      const log = state.log[d] || {};
-      const done = (log.corps ? 1 : 0) + (log.esprit ? 1 : 0) + (log.focus ? 1 : 0);
-      wXP    += log.xp || 0;
-      wQ     += done;
-      wCorps += log.corpsTime  || 0;
-      wEsprit+= log.espritTime || 0;
-      wFocus += log.focusTime  || 0;
+/* =============================================
+   TOAST
+============================================= */
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+}
 
-      const cls = d === today ? 'today' : d > today ? 'future' : done > 0 ? 'active' : '';
-      return `
-        <div class="day-sq ${cls}">
-          <span class="day-lbl">${LABELS[i]}</span>
-          <div class="day-dots">
-            <span class="d-dot ${log.corps  ? 'corps-done'  : ''}"></span>
-            <span class="d-dot ${log.esprit ? 'esprit-done' : ''}"></span>
-            <span class="d-dot ${log.focus  ? 'focus-done'  : ''}"></span>
-          </div>
-        </div>`;
-    }).join('');
-
-    const msgs = [
-      'La discipline construit la légende.',
-      'Chaque session compte.',
-      'Le corps et l\'esprit, forgés ensemble.',
-      'La régularité bat l\'intensité.',
-      'Tu construis quelque chose de réel.'
-    ];
-    const msg = msgs[Math.floor(Math.random() * msgs.length)];
-
-    document.getElementById('recap-body').innerHTML = `
-      <div class="week-grid">${squares}</div>
-      <div class="recap-stats">
-        <div class="rs-card">
-          <span class="rs-val">${wXP}</span>
-          <span class="rs-lbl">⚡ XP gagnés</span>
-        </div>
-        <div class="rs-card">
-          <span class="rs-val">${wQ}</span>
-          <span class="rs-lbl">Quêtes</span>
-        </div>
-        <div class="rs-card">
-          <span class="rs-val">${fmtDuration(wFocus)}</span>
-          <span class="rs-lbl">🎯 Deep work</span>
-        </div>
-        <div class="rs-card">
-          <span class="rs-val">${fmtDuration(wCorps)}</span>
-          <span class="rs-lbl">⚔️ Sport</span>
-        </div>
-        <div class="rs-card">
-          <span class="rs-val">${fmtDuration(wEsprit)}</span>
-          <span class="rs-lbl">📖 Lecture</span>
-        </div>
-        <div class="rs-card">
-          <span class="rs-val">${state.streak}</span>
-          <span class="rs-lbl">🔥 Série</span>
-        </div>
-      </div>
-      <div class="recap-msg">"${msg}"</div>`;
-  }
-
-  /* =============================================
-     TOAST
-  ============================================= */
-  let toastTimer;
-  function toast(msg) {
-    const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
-  }
-
-  /* =============================================
-     BACKGROUND PARTICLES
-  ============================================= */
-  function spawnParticles() {
-    const c = document.getElementById('particles');
-    for (let i = 0; i < 28; i++) {
-      const p = document.createElement('div');
-      p.className = 'pt';
-      p.style.cssText = `
-        left:${Math.random()*100}%;
-        top:${20+Math.random()*75}%;
-        width:${1+Math.random()*2.5}px;
-        height:${1+Math.random()*2.5}px;
-        --d:${5+Math.random()*8}s;
-        --dl:-${Math.random()*10}s;
-        opacity:${0.2+Math.random()*0.4};
-      `;
-      c.appendChild(p);
-    }
-  }
-
-  /* =============================================
-     INIT
-  ============================================= */
-  function init() {
-    state = loadState();
-
-    // Resume any running timers
-    Object.keys(QUESTS).forEach(id => {
-      if (state.timers[id].running) {
-        intervals[id] = setInterval(() => renderQuestCard(id), 1000);
-      }
-    });
-
-    spawnParticles();
-    renderDate();
-    renderAll();
-  }
-
-  // Close recap on background click
-  document.getElementById('recap-modal').addEventListener('click', e => {
-    if (e.target === e.currentTarget) closeRecap();
+/* =============================================
+   INIT
+============================================= */
+function init() {
+  state = loadState();
+  Object.keys(QUESTS).forEach(id => {
+    if (state.timers[id].running)
+      intervals[id] = setInterval(() => renderQuestCard(id), 1000);
   });
+  renderDate();
+  renderAll();
+}
 
-  document.addEventListener('DOMContentLoaded', init);
-  </script>
+document.getElementById('recap-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeRecap();
+});
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
