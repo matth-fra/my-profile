@@ -89,9 +89,7 @@
     }
     .av-stage.active { opacity: 1; }
 
-    .xp-bar-wrap {
-      width: 160px;
-    }
+    .xp-bar-wrap { width: 160px; }
 
     .xp-track {
       height: 4px;
@@ -120,10 +118,18 @@
       margin-top: 5px;
     }
 
-    /* ── DATE ─────────────────────── */
-    .day-row {
-      margin-bottom: 16px;
+    /* ── LABELS DE SECTION ───────── */
+    .section-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin: 18px 0 8px;
     }
+
+    /* ── DATE ─────────────────────── */
+    .day-row { margin-bottom: 2px; }
 
     .day-text {
       font-size: 0.78rem;
@@ -137,7 +143,6 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 22px;
     }
 
     .quest-card {
@@ -204,7 +209,7 @@
       transition: width 1s linear;
     }
 
-    /* ── BUTTONS ──────────────────── */
+    /* ── BOUTONS ──────────────────── */
     .btn-timer {
       display: flex;
       align-items: center;
@@ -255,10 +260,54 @@
       color: var(--qc);
     }
 
+    /* ── CHECK ────────────────────── */
+    .btn-check {
+      padding: 9px 16px;
+      min-height: 44px;
+      background: var(--bg);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: var(--qc);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    /* ── COUNTER ──────────────────── */
+    .counter-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .counter-val {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--qc);
+      min-width: 42px;
+      text-align: right;
+    }
+
+    .btn-plus {
+      width: 44px;
+      height: 44px;
+      background: var(--bg);
+      border: none;
+      border-radius: 12px;
+      color: var(--qc);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     /* ── STATS ────────────────────── */
     .stats-row {
       display: flex;
       gap: 10px;
+      margin-top: 22px;
       margin-bottom: 12px;
     }
 
@@ -391,9 +440,7 @@
       background: var(--sep);
     }
 
-    .d-dot.corps-done  { background: var(--corps); }
-    .d-dot.esprit-done { background: var(--esprit); }
-    .d-dot.focus-done  { background: var(--focus); }
+    .d-dot.done { background: var(--accent); }
 
     .recap-stats {
       display: grid;
@@ -538,116 +585,78 @@
       <span class="hero-stage" id="ring-stage">Apprenti</span>
     </div>
 
-    <!-- 4-stage inline SVG avatar, viewBox 0 0 160 186 -->
     <svg class="avatar-svg" viewBox="0 0 160 186" fill="none" xmlns="http://www.w3.org/2000/svg">
 
       <!-- STAGE 1 · Apprenti — mince, épaules tombantes, posture voûtée -->
       <g class="av-stage active" id="av-s1">
-        <!-- tête -->
         <circle cx="80" cy="28" r="16" fill="#d4b896"/>
-        <!-- cou -->
         <rect x="76" y="42" width="8" height="8" rx="2" fill="#c8a882"/>
-        <!-- torse voûté — épaules tombantes, dos arrondi -->
         <path d="M58 52 Q62 50 80 50 Q98 50 102 52 Q106 60 104 76 Q102 88 80 90 Q58 88 56 76 Q54 60 58 52Z" fill="#a0a0a8"/>
-        <!-- bras gauche tombant -->
         <path d="M58 55 Q50 62 46 78 Q44 86 47 90" stroke="#a0a0a8" stroke-width="9" stroke-linecap="round"/>
-        <!-- bras droit tombant -->
         <path d="M102 55 Q110 62 114 78 Q116 86 113 90" stroke="#a0a0a8" stroke-width="9" stroke-linecap="round"/>
-        <!-- mains -->
         <circle cx="47" cy="91" r="5" fill="#d4b896"/>
         <circle cx="113" cy="91" r="5" fill="#d4b896"/>
-        <!-- jambes serrées -->
         <path d="M72 90 Q70 118 68 146" stroke="#7a7a80" stroke-width="10" stroke-linecap="round"/>
         <path d="M88 90 Q90 118 92 146" stroke="#7a7a80" stroke-width="10" stroke-linecap="round"/>
-        <!-- pieds -->
         <ellipse cx="68" cy="150" rx="9" ry="5" fill="#5a5a60"/>
         <ellipse cx="92" cy="150" rx="9" ry="5" fill="#5a5a60"/>
       </g>
 
       <!-- STAGE 2 · Disciple — plus carré, se redresse, tenue training -->
       <g class="av-stage" id="av-s2">
-        <!-- tête -->
         <circle cx="80" cy="27" r="17" fill="#d4b896"/>
-        <!-- cou -->
         <rect x="75" y="42" width="10" height="8" rx="2" fill="#c8a882"/>
-        <!-- torse plus droit, légèrement élargi -->
         <path d="M55 52 Q62 48 80 48 Q98 48 105 52 Q110 62 108 78 Q106 92 80 94 Q54 92 52 78 Q50 62 55 52Z" fill="#3a7bd5"/>
-        <!-- col training -->
         <path d="M72 48 L80 56 L88 48" fill="#2a6bc5"/>
-        <!-- bras gauche semi-levé -->
         <path d="M56 56 Q46 64 42 80 Q41 88 44 93" stroke="#3a7bd5" stroke-width="10" stroke-linecap="round"/>
-        <!-- bras droit semi-levé -->
         <path d="M104 56 Q114 64 118 80 Q119 88 116 93" stroke="#3a7bd5" stroke-width="10" stroke-linecap="round"/>
-        <!-- mains -->
         <circle cx="44" cy="94" r="6" fill="#d4b896"/>
         <circle cx="116" cy="94" r="6" fill="#d4b896"/>
-        <!-- jambes légèrement écartées -->
         <path d="M74 94 Q71 122 69 148" stroke="#1e4fa0" stroke-width="11" stroke-linecap="round"/>
         <path d="M86 94 Q89 122 91 148" stroke="#1e4fa0" stroke-width="11" stroke-linecap="round"/>
-        <!-- pieds -->
         <ellipse cx="69" cy="152" rx="10" ry="5" fill="#142e6e"/>
         <ellipse cx="91" cy="152" rx="10" ry="5" fill="#142e6e"/>
       </g>
 
-      <!-- STAGE 3 · Maître — athlétique, V-taper, posture droite confiante -->
+      <!-- STAGE 3 · Maître — athlétique, V-taper, posture droite -->
       <g class="av-stage" id="av-s3">
-        <!-- tête -->
         <circle cx="80" cy="25" r="18" fill="#d4b896"/>
-        <!-- cou fort -->
         <rect x="74" y="41" width="12" height="9" rx="3" fill="#c8a882"/>
-        <!-- torse V-taper marqué, épaules larges, taille fine -->
         <path d="M48 50 Q62 44 80 44 Q98 44 112 50 Q118 62 116 80 Q112 96 80 100 Q48 96 44 80 Q42 62 48 50Z" fill="#e8930a"/>
-        <!-- détail torse : bandes musculaires -->
         <path d="M80 44 L80 100" stroke="#d07c08" stroke-width="1.5" opacity="0.5"/>
         <path d="M68 52 Q66 72 68 92" stroke="#d07c08" stroke-width="1" opacity="0.4"/>
         <path d="M92 52 Q94 72 92 92" stroke="#d07c08" stroke-width="1" opacity="0.4"/>
-        <!-- bras gauche levé, coude visible -->
         <path d="M50 54 Q38 64 34 82 Q33 90 36 96" stroke="#e8930a" stroke-width="12" stroke-linecap="round"/>
-        <!-- bras droit levé -->
         <path d="M110 54 Q122 64 126 82 Q127 90 124 96" stroke="#e8930a" stroke-width="12" stroke-linecap="round"/>
-        <!-- mains larges -->
         <circle cx="36" cy="97" r="7" fill="#d4b896"/>
         <circle cx="124" cy="97" r="7" fill="#d4b896"/>
-        <!-- jambes écartées, stables -->
         <path d="M72 100 Q68 126 66 152" stroke="#a05e06" stroke-width="13" stroke-linecap="round"/>
         <path d="M88 100 Q92 126 94 152" stroke="#a05e06" stroke-width="13" stroke-linecap="round"/>
-        <!-- pieds -->
         <ellipse cx="66" cy="156" rx="12" ry="6" fill="#6a3e04"/>
         <ellipse cx="94" cy="156" rx="12" ry="6" fill="#6a3e04"/>
       </g>
 
-      <!-- STAGE 4 · Légende — imposant, très large, stance large, détail signature -->
+      <!-- STAGE 4 · Légende — imposant, large, coudes pliés, détail rouge -->
       <g class="av-stage" id="av-s4">
-        <!-- tête -->
         <circle cx="80" cy="23" r="20" fill="#d4b896"/>
-        <!-- cou puissant -->
         <rect x="72" y="41" width="16" height="10" rx="3" fill="#c8a882"/>
-        <!-- torse massif V-taper extrême -->
         <path d="M38 48 Q60 40 80 40 Q100 40 122 48 Q132 62 130 84 Q126 102 80 108 Q34 102 30 84 Q28 62 38 48Z" fill="#2a2a2e"/>
-        <!-- détail rouge signature : bande centrale -->
         <path d="M80 42 L80 106" stroke="#ff375f" stroke-width="3"/>
-        <!-- épaulettes signature -->
         <path d="M38 52 Q34 50 32 54" stroke="#ff375f" stroke-width="3" stroke-linecap="round"/>
         <path d="M122 52 Q126 50 128 54" stroke="#ff375f" stroke-width="3" stroke-linecap="round"/>
-        <!-- bras gauche coude plié, imposant -->
         <path d="M40 56 Q26 68 24 86" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
         <path d="M24 86 Q24 98 30 104" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
-        <!-- bras droit coude plié -->
         <path d="M120 56 Q134 68 136 86" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
         <path d="M136 86 Q136 98 130 104" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
-        <!-- gants/poings signature rouge -->
         <circle cx="30" cy="105" r="9" fill="#ff375f"/>
         <circle cx="130" cy="105" r="9" fill="#ff375f"/>
-        <!-- jambes très écartées, puissantes -->
         <path d="M68 108 Q62 130 58 158" stroke="#1a1a1e" stroke-width="16" stroke-linecap="round"/>
         <path d="M92 108 Q98 130 102 158" stroke="#1a1a1e" stroke-width="16" stroke-linecap="round"/>
-        <!-- pieds larges -->
         <ellipse cx="58" cy="162" rx="15" ry="7" fill="#ff375f"/>
         <ellipse cx="102" cy="162" rx="15" ry="7" fill="#ff375f"/>
       </g>
     </svg>
 
-    <!-- XP bar -->
     <div class="xp-bar-wrap">
       <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
     </div>
@@ -659,52 +668,13 @@
     <span class="day-text" id="day-text">—</span>
   </div>
 
-  <!-- QUESTS -->
-  <div class="quests">
+  <!-- QUÊTE PRINCIPALE -->
+  <div class="section-label">Quête principale</div>
+  <div class="quests" id="main-quest-wrap"></div>
 
-    <div class="quest-card" data-quest="corps" id="quest-corps">
-      <div class="quest-inner">
-        <div class="q-dot"></div>
-        <div class="q-info">
-          <div class="q-name">Sport</div>
-          <div class="q-sub">Séance physique · 20 min</div>
-        </div>
-        <div class="q-action" id="action-corps"></div>
-      </div>
-      <div class="q-bar-row">
-        <div class="q-track"><div class="q-fill" id="fill-corps"></div></div>
-      </div>
-    </div>
-
-    <div class="quest-card" data-quest="esprit" id="quest-esprit">
-      <div class="quest-inner">
-        <div class="q-dot"></div>
-        <div class="q-info">
-          <div class="q-name">Lecture</div>
-          <div class="q-sub">Apprentissage · 15 min</div>
-        </div>
-        <div class="q-action" id="action-esprit"></div>
-      </div>
-      <div class="q-bar-row">
-        <div class="q-track"><div class="q-fill" id="fill-esprit"></div></div>
-      </div>
-    </div>
-
-    <div class="quest-card" data-quest="focus" id="quest-focus">
-      <div class="quest-inner">
-        <div class="q-dot"></div>
-        <div class="q-info">
-          <div class="q-name">Deep work</div>
-          <div class="q-sub">Concentration · 30 min</div>
-        </div>
-        <div class="q-action" id="action-focus"></div>
-      </div>
-      <div class="q-bar-row">
-        <div class="q-track"><div class="q-fill" id="fill-focus"></div></div>
-      </div>
-    </div>
-
-  </div>
+  <!-- SIDE QUESTS DU JOUR -->
+  <div class="section-label">Quêtes du jour</div>
+  <div class="quests" id="side-quests-wrap"></div>
 
   <!-- STATS -->
   <div class="stats-row">
@@ -751,13 +721,33 @@
 
 <script>
 /* =============================================
-   CONFIG
+   DONNÉES DE QUÊTES
 ============================================= */
-const QUESTS = {
-  corps:  { id: 'corps',  name: 'Sport',     minTime: 20 * 60, xp: 50 },
-  esprit: { id: 'esprit', name: 'Lecture',   minTime: 15 * 60, xp: 40 },
-  focus:  { id: 'focus',  name: 'Deep work', minTime: 30 * 60, xp: 60 }
+const MAIN_QUEST = {
+  id: 'grand_oeuvre',
+  name: 'Le Grand Œuvre',
+  desc: 'Travail profond · 45 min',
+  cat: 'focus',
+  type: 'timer',
+  target: 45 * 60,
+  xp: 80
 };
+
+const SIDE_POOL = [
+  { id: 'biscottos',    name: 'La quête des biscottos', desc: 'Séance physique · 20 min',   cat: 'corps',  type: 'timer',   target: 20 * 60, xp: 50 },
+  { id: 'bibliotheque', name: 'Mode bibliothèque',      desc: 'Lecture · 15 min',            cat: 'esprit', type: 'timer',   target: 15 * 60, xp: 40 },
+  { id: 'couloir_nage', name: 'Le couloir de nage',     desc: 'Cardio · 25 min',             cat: 'corps',  type: 'timer',   target: 25 * 60, xp: 55 },
+  { id: 'bain_cerveau', name: 'Bain de cerveau',        desc: 'Podcast ou cours · 20 min',   cat: 'esprit', type: 'timer',   target: 20 * 60, xp: 45 },
+  { id: 'sans_ecran',   name: 'Sans écran avant café',  desc: 'Pas de tel au réveil',        cat: 'focus',  type: 'check',   target: 1,       xp: 20 },
+  { id: 'hydratation',  name: 'Hydratation de guerre',  desc: '2 litres dans la journée',    cat: 'corps',  type: 'check',   target: 1,       xp: 15 },
+  { id: 'carnet_sage',  name: 'Le carnet du sage',      desc: 'Écrire dans son journal',     cat: 'esprit', type: 'check',   target: 1,       xp: 25 },
+  { id: 'page_page',    name: 'Page par page',          desc: '10 pages à lire',             cat: 'esprit', type: 'counter', target: 10,      xp: 35 },
+  { id: 'centenaire',   name: 'Le centenaire',          desc: '100 pompes dans la journée',  cat: 'corps',  type: 'counter', target: 100,     xp: 60 },
+  { id: 'cinq_gratit',  name: 'Les 5 gratitudes',       desc: 'Note 5 choses positives',     cat: 'esprit', type: 'counter', target: 5,       xp: 25 },
+];
+
+const STAGE_LABELS = ['Apprenti', 'Disciple', 'Maître', 'Légende'];
+const BONUS_ALL_XP = 30;
 
 const LEVEL_XP = [
   0, 150, 350, 600, 1000, 1500, 2100, 2800, 3600, 4600,
@@ -765,25 +755,49 @@ const LEVEL_XP = [
   32500, 37000, 42000, 47500, 53500, 60000, 67500, 76000, 85000, 95000
 ];
 
-const STAGE_LABELS = ['Apprenti', 'Disciple', 'Maître', 'Légende'];
-const STAGE_COLORS = ['#8e8e93', '#007aff', '#ff9f0a', '#ff375f'];
-const BONUS_ALL_XP = 30;
+/* =============================================
+   HELPERS QUÊTES
+============================================= */
+function getQuest(id) {
+  if (MAIN_QUEST.id === id) return MAIN_QUEST;
+  return SIDE_POOL.find(q => q.id === id) || null;
+}
+
+function seededShuffle(arr, seed) {
+  const a = [...arr];
+  let s = (seed % 2147483647) || 1;
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s * 16807) % 2147483647;
+    [a[i], a[s % (i + 1)]] = [a[s % (i + 1)], a[i]];
+  }
+  return a;
+}
+
+function getDailyQuests() {
+  const seed = parseInt(getToday().replace(/-/g, ''), 10);
+  return seededShuffle(SIDE_POOL, seed).slice(0, 3);
+}
+
+function getTodayQuestIds() {
+  return [MAIN_QUEST.id, ...getDailyQuests().map(q => q.id)];
+}
 
 /* =============================================
    STATE
 ============================================= */
-const DEFAULT_TIMERS = () => ({
-  corps:  { running: false, elapsed: 0, startTs: null, completed: false },
-  esprit: { running: false, elapsed: 0, startTs: null, completed: false },
-  focus:  { running: false, elapsed: 0, startTs: null, completed: false }
-});
-
 let state;
 const intervals = {};
 
+function getQuestState(id) {
+  if (!state.quests) state.quests = {};
+  if (!state.quests[id])
+    state.quests[id] = { running: false, elapsed: 0, startTs: null, completed: false, count: 0 };
+  return state.quests[id];
+}
+
 function loadState() {
   try {
-    const raw = localStorage.getItem('rpg_v1');
+    const raw = localStorage.getItem('rpg_v2');
     if (raw) {
       const s = JSON.parse(raw);
       const today = getToday();
@@ -791,17 +805,24 @@ function loadState() {
         const yesterday = shiftDate(-1);
         const hadActivity = (s.log[yesterday] || {}).any;
         if (!hadActivity && s.streak > 0) s.streak = 0;
-        s.timers = DEFAULT_TIMERS();
+        s.quests = {};
       }
       s.lastDate = today;
+      if (!s.quests) s.quests = {};
       return s;
     }
+    // Migration depuis v1 : on récupère XP/streak
+    const old = localStorage.getItem('rpg_v1');
+    if (old) {
+      const o = JSON.parse(old);
+      return { totalXP: o.totalXP || 0, streak: o.streak || 0, totalDays: o.totalDays || 0,
+               lastDate: getToday(), log: {}, quests: {} };
+    }
   } catch (_) {}
-  return { totalXP: 0, streak: 0, totalDays: 0, lastDate: getToday(),
-           log: {}, timers: DEFAULT_TIMERS() };
+  return { totalXP: 0, streak: 0, totalDays: 0, lastDate: getToday(), log: {}, quests: {} };
 }
 
-function save() { localStorage.setItem('rpg_v1', JSON.stringify(state)); }
+function save() { localStorage.setItem('rpg_v2', JSON.stringify(state)); }
 
 /* =============================================
    DATE UTILS
@@ -817,9 +838,8 @@ function shiftDate(days) {
 function todayLog() {
   const t = getToday();
   if (!state.log[t]) state.log[t] = {
-    corps: false, esprit: false, focus: false, any: false,
-    bonusAwarded: false, xp: 0, firstCompleted: false,
-    corpsTime: 0, espritTime: 0, focusTime: 0
+    completed: {}, any: false, bonusAwarded: false,
+    xp: 0, firstCompleted: false, times: {}
   };
   return state.log[t];
 }
@@ -862,46 +882,61 @@ function getStage(lv) {
    TIMER ENGINE
 ============================================= */
 function getElapsed(id) {
-  const t = state.timers[id];
-  if (!t.running || !t.startTs) return t.elapsed;
-  return t.elapsed + Math.floor((Date.now() - t.startTs) / 1000);
+  const qs = getQuestState(id);
+  if (!qs.running || !qs.startTs) return qs.elapsed;
+  return qs.elapsed + Math.floor((Date.now() - qs.startTs) / 1000);
 }
 
 function toggleTimer(id) {
-  const t = state.timers[id];
-  if (t.completed) return;
-  if (t.running) {
-    t.elapsed  = getElapsed(id);
-    t.running  = false;
-    t.startTs  = null;
-    clearInterval(intervals[id]);
-    delete intervals[id];
+  const qs = getQuestState(id);
+  if (qs.completed) return;
+  const quest = getQuest(id);
+  if (!quest) return;
+  if (qs.running) {
+    qs.elapsed = getElapsed(id);
+    qs.running = false; qs.startTs = null;
+    clearInterval(intervals[id]); delete intervals[id];
   } else {
-    t.running = true;
-    t.startTs = Date.now();
-    intervals[id] = setInterval(() => renderQuestCard(id), 1000);
+    qs.running = true; qs.startTs = Date.now();
+    intervals[id] = setInterval(() => renderQuestCard(quest), 1000);
   }
   save();
-  renderQuestCard(id);
+  renderQuestCard(quest);
+}
+
+function incrementCounter(id) {
+  const qs = getQuestState(id);
+  if (qs.completed) return;
+  const quest = getQuest(id);
+  if (!quest) return;
+  qs.count = (qs.count || 0) + 1;
+  save();
+  renderQuestCard(quest);
 }
 
 function completeQuest(id) {
-  const t = state.timers[id];
-  if (t.completed) return;
+  const quest = getQuest(id);
+  const qs    = getQuestState(id);
+  if (!quest || qs.completed) return;
 
-  t.elapsed = getElapsed(id);
-  t.running = false; t.startTs = null;
-  clearInterval(intervals[id]); delete intervals[id];
-  t.completed = true;
+  if (quest.type === 'timer') {
+    qs.elapsed = getElapsed(id);
+    qs.running = false; qs.startTs = null;
+    clearInterval(intervals[id]); delete intervals[id];
+  }
+  qs.completed = true;
 
   const log = todayLog();
-  log[id] = true; log.any = true; log[`${id}Time`] = t.elapsed;
+  log.completed[id] = true;
+  log.any = true;
+  if (quest.type === 'timer') log.times[id] = qs.elapsed;
 
   const prevLv = getLevel(state.totalXP);
-  state.totalXP += QUESTS[id].xp;
-  log.xp = (log.xp || 0) + QUESTS[id].xp;
+  state.totalXP += quest.xp;
+  log.xp = (log.xp || 0) + quest.xp;
 
-  if (log.corps && log.esprit && log.focus && !log.bonusAwarded) {
+  const allDone = getTodayQuestIds().every(qid => log.completed[qid]);
+  if (allDone && !log.bonusAwarded) {
     state.totalXP += BONUS_ALL_XP;
     log.xp += BONUS_ALL_XP;
     log.bonusAwarded = true;
@@ -917,37 +952,88 @@ function completeQuest(id) {
   save();
   const newLv = getLevel(state.totalXP);
   if (newLv > prevLv) setTimeout(() => showLevelUp(newLv, prevLv), 900);
-
-  toast(`+${QUESTS[id].xp} XP — ${QUESTS[id].name} !`);
+  toast(`+${quest.xp} XP — ${quest.name} !`);
   renderAll();
 }
 
 /* =============================================
    RENDER
 ============================================= */
-function renderQuestCard(id) {
-  const t       = state.timers[id];
-  const elapsed = getElapsed(id);
-  const pct     = Math.min(100, elapsed / QUESTS[id].minTime * 100);
-  const reached = elapsed >= QUESTS[id].minTime;
+function questCardHTML(quest, isMain) {
+  return `<div class="quest-card${isMain ? ' main-quest' : ''}" data-quest="${quest.cat}" id="quest-${quest.id}">
+    <div class="quest-inner">
+      <div class="q-dot"></div>
+      <div class="q-info">
+        <div class="q-name">${quest.name}</div>
+        <div class="q-sub">${quest.desc}</div>
+      </div>
+      <div class="q-action" id="action-${quest.id}"></div>
+    </div>
+    <div class="q-bar-row">
+      <div class="q-track"><div class="q-fill" id="fill-${quest.id}"></div></div>
+    </div>
+  </div>`;
+}
+
+function renderQuestCard(quest) {
+  const id = quest.id;
+  const qs = getQuestState(id);
+  let pct  = 0;
+  let html = '';
+
+  if (qs.completed) {
+    let label = '✓';
+    if (quest.type === 'timer')   label = `✓ ${fmt(qs.elapsed)}`;
+    if (quest.type === 'counter') label = `✓ ${quest.target}/${quest.target}`;
+    html = `<div class="badge-done">${label}</div>`;
+    pct  = 100;
+  } else if (quest.type === 'timer') {
+    const elapsed = getElapsed(id);
+    pct = Math.min(100, elapsed / quest.target * 100);
+    if (elapsed >= quest.target) {
+      html = `<button class="btn-complete" onclick="completeQuest('${id}')">Terminer</button>`;
+    } else {
+      const icon = qs.running ? '⏸' : '▶';
+      html = `<button class="btn-timer${qs.running ? ' running' : ''}" onclick="toggleTimer('${id}')">${icon} ${fmt(elapsed)}</button>`;
+    }
+  } else if (quest.type === 'check') {
+    html = `<button class="btn-check" onclick="completeQuest('${id}')">Cocher</button>`;
+  } else if (quest.type === 'counter') {
+    const count = qs.count || 0;
+    pct = Math.min(100, count / quest.target * 100);
+    if (count >= quest.target) {
+      html = `<button class="btn-complete" onclick="completeQuest('${id}')">Terminer</button>`;
+    } else {
+      html = `<div class="counter-wrap">
+        <span class="counter-val">${count}/${quest.target}</span>
+        <button class="btn-plus" onclick="incrementCounter('${id}')">+1</button>
+      </div>`;
+    }
+  }
+
+  const card = document.getElementById(`quest-${id}`);
+  if (card) card.classList.toggle('completed', qs.completed);
 
   const fill = document.getElementById(`fill-${id}`);
   if (fill) fill.style.width = `${pct}%`;
 
-  const card = document.getElementById(`quest-${id}`);
-  if (card) card.classList.toggle('completed', t.completed);
-
   const area = document.getElementById(`action-${id}`);
-  if (!area) return;
+  if (area) area.innerHTML = html;
+}
 
-  if (t.completed) {
-    area.innerHTML = `<div class="badge-done">✓ ${fmt(t.elapsed)}</div>`;
-  } else if (reached && t.running) {
-    area.innerHTML = `<button class="btn-complete" onclick="completeQuest('${id}')">Terminer</button>`;
-  } else {
-    const icon = t.running ? '⏸' : '▶';
-    area.innerHTML = `<button class="btn-timer ${t.running ? 'running' : ''}" onclick="toggleTimer('${id}')">${icon} ${fmt(elapsed)}</button>`;
-  }
+function renderMainQuest() {
+  const wrap = document.getElementById('main-quest-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = questCardHTML(MAIN_QUEST, true);
+  renderQuestCard(MAIN_QUEST);
+}
+
+function renderSideQuests() {
+  const wrap = document.getElementById('side-quests-wrap');
+  if (!wrap) return;
+  const quests = getDailyQuests();
+  wrap.innerHTML = quests.map(q => questCardHTML(q)).join('');
+  quests.forEach(q => renderQuestCard(q));
 }
 
 function renderHero() {
@@ -991,7 +1077,8 @@ function renderDate() {
 function renderAll() {
   renderHero();
   renderStats();
-  Object.keys(QUESTS).forEach(id => renderQuestCard(id));
+  renderMainQuest();
+  renderSideQuests();
 }
 
 /* =============================================
@@ -1021,23 +1108,22 @@ function buildRecap() {
   const LABELS    = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
   const days      = Array.from({length: 7}, (_, i) => shiftDate(mondayOff + i));
 
-  let wXP = 0, wQ = 0, wCorps = 0, wEsprit = 0, wFocus = 0;
+  let wXP = 0, wQ = 0, wTime = 0;
 
   const squares = days.map((d, i) => {
-    const log = state.log[d] || {};
-    const done = (log.corps?1:0) + (log.esprit?1:0) + (log.focus?1:0);
-    wXP += log.xp || 0; wQ += done;
-    wCorps  += log.corpsTime  || 0;
-    wEsprit += log.espritTime || 0;
-    wFocus  += log.focusTime  || 0;
+    const log   = state.log[d] || {};
+    const done  = Object.values(log.completed || {}).filter(Boolean).length;
+    wXP  += log.xp || 0;
+    wQ   += done;
+    wTime += Object.values(log.times || {}).reduce((a, b) => a + b, 0);
+
     const cls = d === today ? 'today' : d > today ? 'future' : done > 0 ? 'active' : '';
+    let dots  = '';
+    for (let k = 0; k < 4; k++)
+      dots += `<span class="d-dot${k < done ? ' done' : ''}"></span>`;
     return `<div class="day-sq ${cls}">
       <span class="day-lbl">${LABELS[i]}</span>
-      <div class="day-dots">
-        <span class="d-dot ${log.corps  ? 'corps-done'  : ''}"></span>
-        <span class="d-dot ${log.esprit ? 'esprit-done' : ''}"></span>
-        <span class="d-dot ${log.focus  ? 'focus-done'  : ''}"></span>
-      </div></div>`;
+      <div class="day-dots">${dots}</div></div>`;
   }).join('');
 
   const msgs = [
@@ -1053,9 +1139,7 @@ function buildRecap() {
     <div class="recap-stats">
       <div class="rs-card"><span class="rs-val">${wXP}</span><span class="rs-lbl">⚡ XP</span></div>
       <div class="rs-card"><span class="rs-val">${wQ}</span><span class="rs-lbl">Quêtes</span></div>
-      <div class="rs-card"><span class="rs-val">${fmtDuration(wFocus)}</span><span class="rs-lbl">Deep work</span></div>
-      <div class="rs-card"><span class="rs-val">${fmtDuration(wCorps)}</span><span class="rs-lbl">Sport</span></div>
-      <div class="rs-card"><span class="rs-val">${fmtDuration(wEsprit)}</span><span class="rs-lbl">Lecture</span></div>
+      <div class="rs-card"><span class="rs-val">${fmtDuration(wTime)}</span><span class="rs-lbl">Temps actif</span></div>
       <div class="rs-card"><span class="rs-val">${state.streak}</span><span class="rs-lbl">🔥 Série</span></div>
     </div>
     <div class="recap-msg">${msgs[Math.floor(Math.random() * msgs.length)]}</div>`;
@@ -1077,9 +1161,11 @@ function toast(msg) {
 ============================================= */
 function init() {
   state = loadState();
-  Object.keys(QUESTS).forEach(id => {
-    if (state.timers[id].running)
-      intervals[id] = setInterval(() => renderQuestCard(id), 1000);
+  const todayQuests = [MAIN_QUEST, ...getDailyQuests()];
+  todayQuests.forEach(q => {
+    const qs = getQuestState(q.id);
+    if (q.type === 'timer' && qs.running)
+      intervals[q.id] = setInterval(() => renderQuestCard(q), 1000);
   });
   renderDate();
   renderAll();
