@@ -4,24 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="theme-color" content="#f2f2f7">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0d0d12">
   <title>Daily RPG</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:     #f2f2f7;
-      --card:   #ffffff;
-      --text:   #1c1c1e;
-      --sub:    #3c3c43;
-      --muted:  #8e8e93;
-      --sep:    #e5e5ea;
-      --accent: #007aff;
-      --corps:  #ff3b30;
-      --esprit: #34c759;
-      --focus:  #5856d6;
-      --sh: 0 1px 4px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+      --bg:       #0d0d12;
+      --surface:  #17171f;
+      --surface2: #1f1f29;
+      --border:   #2a2a36;
+      --text:     #f0f0f8;
+      --sub:      #9898a8;
+      --muted:    #55555f;
+
+      --biscottos: #ff453a;
+      --lecture:   #34c759;
+      --flow:      #bf5af2;
+
+      --s1: #8e8e93;
+      --s2: #007aff;
+      --s3: #ff9f0a;
+      --s4: #ff375f;
     }
 
     html, body {
@@ -37,165 +42,196 @@
     .app {
       max-width: 430px;
       margin: 0 auto;
-      padding: 0 16px 88px;
+      padding: 0 16px 100px;
     }
 
-    /* ── HERO AVATAR ─────────────── */
-    .hero-section {
+    /* ── HERO ─────────────────────────────────── */
+    .hero {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 36px 0 20px;
-      gap: 6px;
+      padding: 44px 0 28px;
     }
 
-    .hero-meta {
+    .hero-day-badge {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 160px;
+      height: 186px;
+      margin-bottom: 14px;
+    }
+
+    .avatar-ring {
+      position: absolute;
+      top: -10px; left: -10px; right: -10px; bottom: -10px;
+      border-radius: 50%;
+      border: 1.5px solid transparent;
+      transition: border-color 0.7s, box-shadow 0.7s;
+      pointer-events: none;
+    }
+
+    [data-stage="2"] .avatar-ring { border-color: var(--s2); box-shadow: 0 0 22px rgba(0,122,255,.18); }
+    [data-stage="3"] .avatar-ring { border-color: var(--s3); box-shadow: 0 0 22px rgba(255,159,10,.18); }
+    [data-stage="4"] .avatar-ring { border-color: var(--s4); box-shadow: 0 0 30px rgba(255,55,95,.28); }
+
+    .avatar-svg { width: 160px; height: 186px; overflow: visible; }
+
+    .av-stage { opacity: 0; transition: opacity 0.7s ease; }
+    .av-stage.active { opacity: 1; }
+
+    .hero-stage-name {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--s1);
+      margin-bottom: 6px;
+      transition: color 0.7s;
+    }
+    [data-stage="2"] .hero-stage-name { color: var(--s2); }
+    [data-stage="3"] .hero-stage-name { color: var(--s3); }
+    [data-stage="4"] .hero-stage-name { color: var(--s4); }
+
+    .hero-level-row {
       display: flex;
       align-items: baseline;
-      gap: 8px;
-      margin-bottom: 2px;
+      gap: 6px;
+      margin-bottom: 12px;
     }
-
     .hero-lv {
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 2.6rem;
+      font-weight: 900;
       color: var(--text);
+      letter-spacing: -0.06em;
       line-height: 1;
-      letter-spacing: -0.04em;
     }
-
-    .hero-stage {
+    .hero-lv-lbl {
       font-size: 0.68rem;
       font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      transition: color 0.5s;
+      letter-spacing: 0.12em;
     }
 
-    [data-stage="2"] .hero-stage { color: #007aff; }
-    [data-stage="3"] .hero-stage { color: #ff9f0a; }
-    [data-stage="4"] .hero-stage { color: #ff375f; }
-
-    .avatar-svg {
-      width: 160px;
-      height: 186px;
-      overflow: visible;
-    }
-
-    .av-stage {
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-    .av-stage.active { opacity: 1; }
-
-    .xp-bar-wrap {
-      width: 160px;
-    }
-
+    .xp-bar-wrap { width: 190px; }
     .xp-track {
       height: 4px;
-      background: var(--sep);
-      border-radius: 3px;
+      background: var(--border);
+      border-radius: 4px;
       overflow: hidden;
+      margin-bottom: 5px;
     }
-
     .xp-fill {
       height: 100%;
       width: 0%;
-      background: var(--muted);
-      border-radius: 3px;
-      transition: width 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  background 0.6s ease;
+      background: var(--s1);
+      border-radius: 4px;
+      transition: width 1.1s cubic-bezier(.25,.46,.45,.94), background .7s;
     }
+    [data-stage="2"] .xp-fill { background: var(--s2); }
+    [data-stage="3"] .xp-fill { background: var(--s3); }
+    [data-stage="4"] .xp-fill { background: var(--s4); }
 
-    [data-stage="2"] .xp-fill { background: #007aff; }
-    [data-stage="3"] .xp-fill { background: #ff9f0a; }
-    [data-stage="4"] .xp-fill { background: #ff375f; }
-
-    .xp-sub {
-      font-size: 0.72rem;
+    .xp-lbl {
+      font-size: 0.65rem;
       color: var(--muted);
       text-align: center;
-      margin-top: 5px;
     }
 
-    /* ── DATE ─────────────────────── */
-    .day-row {
-      margin-bottom: 16px;
-    }
-
-    .day-text {
-      font-size: 0.78rem;
+    /* ── DATE ─────────────────────────────────── */
+    .date-row { margin-bottom: 22px; }
+    .date-text {
+      font-size: 0.76rem;
       font-weight: 600;
-      color: var(--muted);
+      color: var(--sub);
       text-transform: capitalize;
     }
 
-    /* ── QUESTS ───────────────────── */
-    .quests {
+    /* ── SECTION LABEL ────────────────────────── */
+    .section-lbl {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* ── QUEST CARDS ──────────────────────────── */
+    .quests-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 22px;
+      margin-bottom: 26px;
     }
 
     .quest-card {
-      background: var(--card);
-      border-radius: 18px;
-      box-shadow: var(--sh);
+      background: var(--surface);
+      border-radius: 20px;
       overflow: hidden;
-      border: 1.5px solid transparent;
-      transition: border-color 0.3s;
+      border: 1.5px solid var(--border);
+      transition: border-color .35s, box-shadow .35s;
     }
 
-    .quest-card[data-quest="corps"]  { --qc: var(--corps); }
-    .quest-card[data-quest="esprit"] { --qc: var(--esprit); }
-    .quest-card[data-quest="focus"]  { --qc: var(--focus); }
+    .quest-card[data-q="biscottos"] { --qc: var(--biscottos); }
+    .quest-card[data-q="lecture"]   { --qc: var(--lecture); }
+    .quest-card[data-q="flow"]      { --qc: var(--flow); }
 
-    .quest-card.completed { border-color: var(--qc); }
+    .quest-card.done {
+      border-color: var(--qc);
+      box-shadow: 0 0 18px color-mix(in srgb, var(--qc) 16%, transparent);
+    }
+
+    .main-badge {
+      display: block;
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--qc);
+      padding: 11px 16px 0;
+    }
 
     .quest-inner {
       display: flex;
       align-items: center;
-      padding: 16px 16px 12px;
-      gap: 14px;
+      padding: 13px 16px 11px;
+      gap: 12px;
     }
+    .main-quest .quest-inner { padding-top: 9px; }
 
-    .q-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: var(--qc);
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
+    .q-icon { font-size: 1.5rem; line-height: 1; flex-shrink: 0; }
 
     .q-info { flex: 1; min-width: 0; }
-
     .q-name {
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 0.96rem;
+      font-weight: 700;
       color: var(--text);
       margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+    .main-quest .q-name { font-size: 1.02rem; }
 
-    .q-sub {
-      font-size: 0.74rem;
-      color: var(--muted);
-    }
-
+    .q-sub { font-size: 0.71rem; color: var(--sub); }
     .q-action { flex-shrink: 0; }
 
     .q-bar-row { padding: 0 16px 13px; }
-
     .q-track {
       height: 3px;
-      background: var(--sep);
+      background: var(--border);
       border-radius: 2px;
       overflow: hidden;
     }
-
     .q-fill {
       height: 100%;
       width: 0%;
@@ -204,111 +240,116 @@
       transition: width 1s linear;
     }
 
-    /* ── BUTTONS ──────────────────── */
+    /* ── BUTTONS ──────────────────────────────── */
     .btn-timer {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 9px 15px;
-      min-height: 44px;
-      min-width: 88px;
-      background: var(--bg);
-      border: none;
+      gap: 5px;
+      padding: 9px 13px;
+      min-height: 42px;
+      min-width: 84px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
       border-radius: 12px;
       cursor: pointer;
-      font-size: 0.88rem;
-      font-weight: 600;
+      font-size: 0.84rem;
+      font-weight: 700;
       color: var(--qc);
       justify-content: center;
     }
-
     .btn-timer.running {
-      background: color-mix(in srgb, var(--qc) 10%, white);
+      background: color-mix(in srgb, var(--qc) 11%, transparent);
+      border-color: color-mix(in srgb, var(--qc) 38%, transparent);
+      animation: timer-pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes timer-pulse {
+      0%,100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--qc) 28%, transparent); }
+      50%      { box-shadow: 0 0 0 7px transparent; }
     }
 
     .btn-complete {
-      padding: 9px 16px;
-      min-height: 44px;
+      padding: 9px 15px;
+      min-height: 42px;
       background: var(--qc);
       border: none;
       border-radius: 12px;
       cursor: pointer;
       color: #fff;
-      font-size: 0.82rem;
-      font-weight: 700;
-      animation: pop 1.2s ease-in-out infinite;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      animation: complete-pop 1.5s ease-in-out infinite;
     }
-
-    @keyframes pop {
-      0%, 100% { transform: scale(1); }
-      50%       { transform: scale(1.05); }
+    @keyframes complete-pop {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.07); }
     }
 
     .badge-done {
       display: flex;
       align-items: center;
-      gap: 5px;
-      padding: 9px 12px;
-      min-height: 44px;
-      font-size: 0.82rem;
-      font-weight: 600;
+      gap: 4px;
+      padding: 9px 11px;
+      min-height: 42px;
+      font-size: 0.8rem;
+      font-weight: 700;
       color: var(--qc);
     }
 
-    /* ── STATS ────────────────────── */
+    /* ── STATS ────────────────────────────────── */
     .stats-row {
       display: flex;
       gap: 10px;
       margin-bottom: 12px;
     }
-
     .stat-card {
       flex: 1;
-      background: var(--card);
-      border-radius: 16px;
-      padding: 16px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px 8px;
       text-align: center;
-      box-shadow: var(--sh);
     }
-
     .stat-val {
       display: block;
-      font-size: 1.7rem;
-      font-weight: 700;
+      font-size: 1.85rem;
+      font-weight: 900;
       color: var(--text);
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
       line-height: 1;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
-
     .stat-lbl {
-      font-size: 0.6rem;
-      font-weight: 600;
+      font-size: 0.56rem;
+      font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.09em;
     }
 
-    /* ── RECAP BUTTON ─────────────── */
+    /* ── RECAP BUTTON ─────────────────────────── */
     .btn-recap {
       width: 100%;
       padding: 16px;
-      background: var(--card);
-      border: none;
-      border-radius: 16px;
-      box-shadow: var(--sh);
-      color: var(--accent);
-      font-size: 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      color: var(--sub);
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
       text-align: center;
+      transition: border-color .2s;
     }
+    .btn-recap:active { border-color: var(--muted); }
 
-    /* ── RECAP MODAL ──────────────── */
+    /* ── RECAP MODAL ──────────────────────────── */
     .modal-bg {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.35);
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(6px);
       z-index: 100;
       display: none;
       align-items: flex-end;
@@ -319,14 +360,14 @@
     .modal-sheet {
       width: 100%;
       max-width: 430px;
-      background: var(--bg);
-      border-radius: 22px 22px 0 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px 24px 0 0;
       padding: 12px 20px 52px;
       max-height: 88vh;
       overflow-y: auto;
-      animation: sheet-up 0.26s cubic-bezier(0.32, 0.72, 0, 1);
+      animation: sheet-up .28s cubic-bezier(.32,.72,0,1);
     }
-
     @keyframes sheet-up {
       from { transform: translateY(28px); opacity: 0; }
       to   { transform: none; opacity: 1; }
@@ -335,28 +376,34 @@
     .modal-handle {
       width: 36px;
       height: 4px;
-      background: var(--sep);
+      background: var(--border);
       border-radius: 2px;
       margin: 0 auto 22px;
     }
-
     .modal-title {
-      font-size: 1.05rem;
-      font-weight: 700;
+      font-size: 1.1rem;
+      font-weight: 900;
       color: var(--text);
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 5px;
+      letter-spacing: -0.02em;
+    }
+    .modal-sub {
+      font-size: 0.72rem;
+      color: var(--sub);
+      text-align: center;
+      margin-bottom: 22px;
     }
 
     .week-grid {
       display: flex;
       gap: 6px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
-
     .day-sq {
       flex: 1;
-      background: var(--card);
+      background: var(--surface2);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 9px 4px;
       display: flex;
@@ -364,88 +411,82 @@
       align-items: center;
       gap: 7px;
     }
-
-    .day-sq.active { background: #edf4ff; }
-    .day-sq.today  { background: #e0edff; box-shadow: 0 0 0 1.5px var(--accent); }
-    .day-sq.future { opacity: 0.3; }
+    .day-sq.active { background: #1a2030; border-color: #273048; }
+    .day-sq.today  { background: #162038; box-shadow: 0 0 0 1.5px var(--s2); border-color: var(--s2); }
+    .day-sq.future { opacity: 0.22; }
 
     .day-lbl {
-      font-size: 0.55rem;
-      font-weight: 600;
+      font-size: 0.5rem;
+      font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
-
-    .day-dots {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      align-items: center;
-    }
-
+    .day-dots { display: flex; flex-direction: column; gap: 3px; align-items: center; }
     .d-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--sep);
+      background: var(--border);
     }
-
-    .d-dot.corps-done  { background: var(--corps); }
-    .d-dot.esprit-done { background: var(--esprit); }
-    .d-dot.focus-done  { background: var(--focus); }
+    .d-dot.b-done { background: var(--biscottos); }
+    .d-dot.l-done { background: var(--lecture); }
+    .d-dot.f-done { background: var(--flow); }
 
     .recap-stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
-
     .rs-card {
-      background: var(--card);
+      background: var(--surface2);
+      border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 14px 13px;
+      padding: 13px 12px;
     }
-
     .rs-val {
       display: block;
       font-size: 1.3rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text);
       letter-spacing: -0.03em;
       margin-bottom: 3px;
     }
-
     .rs-lbl {
-      font-size: 0.62rem;
-      font-weight: 500;
+      font-size: 0.58rem;
+      font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
 
     .recap-msg {
-      margin-top: 20px;
+      margin-top: 18px;
+      padding: 14px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
       text-align: center;
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.55;
+      font-size: 0.8rem;
+      color: var(--sub);
+      line-height: 1.65;
+      font-style: italic;
     }
 
     .btn-close {
       width: 100%;
-      margin-top: 18px;
-      padding: 15px;
-      background: var(--card);
-      border: none;
+      margin-top: 14px;
+      padding: 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
       border-radius: 14px;
-      color: var(--accent);
+      color: var(--sub);
       font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
     }
 
-    /* ── LEVEL-UP ─────────────────── */
+    /* ── LEVEL-UP OVERLAY ─────────────────────── */
     #lu-overlay {
       position: fixed;
       inset: 0;
@@ -455,252 +496,231 @@
       justify-content: center;
       pointer-events: none;
     }
-
     #lu-overlay.show {
       display: flex;
-      animation: lu-bg 3.8s forwards;
+      animation: lu-bg 4s forwards;
     }
-
     @keyframes lu-bg {
       0%   { background: rgba(0,0,0,0); }
-      18%  { background: rgba(0,0,0,0.72); }
-      80%  { background: rgba(0,0,0,0.72); }
+      14%  { background: rgba(0,0,0,.88); }
+      80%  { background: rgba(0,0,0,.88); }
       100% { background: rgba(0,0,0,0); }
     }
-
     .lu-content {
       text-align: center;
-      animation: lu-pop 3.8s forwards;
+      animation: lu-pop 4s forwards;
     }
-
     @keyframes lu-pop {
-      0%   { opacity: 0; transform: scale(0.8); }
-      18%  { opacity: 1; transform: scale(1.02); }
-      25%  { transform: scale(1); }
-      80%  { opacity: 1; }
-      100% { opacity: 0; }
+      0%   { opacity: 0; transform: scale(.72) translateY(24px); }
+      14%  { opacity: 1; transform: scale(1.05); }
+      22%  { transform: scale(1); }
+      78%  { opacity: 1; }
+      100% { opacity: 0; transform: scale(.9); }
     }
-
-    .lu-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.55);
-      letter-spacing: 0.22em;
+    .lu-sup {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.4);
+      letter-spacing: 0.26em;
       text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .lu-number {
-      font-size: 6.5rem;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1;
-      letter-spacing: -0.06em;
       margin-bottom: 8px;
     }
-
-    .lu-stage {
+    .lu-num {
+      font-size: 7.5rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: -0.07em;
+      margin-bottom: 10px;
+    }
+    .lu-stage-lbl {
       font-size: 1rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.75);
-      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: rgba(255,255,255,.6);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
-    /* ── TOAST ────────────────────── */
+    /* ── PERFECT DAY FLASH ───────────────────── */
+    #perfect-flash {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      pointer-events: none;
+      display: none;
+    }
+    #perfect-flash.show {
+      display: block;
+      animation: pday-flash .7s ease-out forwards;
+    }
+    @keyframes pday-flash {
+      0%   { background: rgba(255,214,10,0); }
+      30%  { background: rgba(255,214,10,.14); }
+      100% { background: rgba(255,214,10,0); }
+    }
+
+    /* ── TOAST ────────────────────────────────── */
     #toast {
       position: fixed;
-      bottom: 28px;
+      bottom: 34px;
       left: 50%;
-      transform: translateX(-50%) translateY(72px);
-      background: #1c1c1e;
-      color: #fff;
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 11px 20px;
-      border-radius: 22px;
+      transform: translateX(-50%) translateY(88px);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 12px 22px;
+      border-radius: 26px;
       white-space: nowrap;
       z-index: 300;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.22);
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 10px 40px rgba(0,0,0,.5);
+      transition: transform .32s cubic-bezier(.34,1.56,.64,1);
     }
-
     #toast.show { transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
 
-<div class="app">
+<div class="app" id="app" data-stage="1">
 
-  <!-- HERO AVATAR -->
-  <div class="hero-section" id="ring-section" data-stage="1">
-    <div class="hero-meta">
-      <span class="hero-lv" id="ring-level">1</span>
-      <span class="hero-stage" id="ring-stage">Apprenti</span>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-day-badge" id="day-badge">—</div>
+
+    <div class="avatar-wrap">
+      <div class="avatar-ring"></div>
+      <svg class="avatar-svg" viewBox="0 0 160 186" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- STAGE 1 · Le Départ — posture molle, fringues basiques -->
+        <g class="av-stage active" id="av-s1">
+          <circle cx="80" cy="28" r="16" fill="#d4b896"/>
+          <rect x="76" y="42" width="8" height="8" rx="2" fill="#c8a882"/>
+          <path d="M58 52 Q62 50 80 50 Q98 50 102 52 Q106 60 104 76 Q102 88 80 90 Q58 88 56 76 Q54 60 58 52Z" fill="#a0a0a8"/>
+          <path d="M58 55 Q50 62 46 78 Q44 86 47 90" stroke="#a0a0a8" stroke-width="9" stroke-linecap="round"/>
+          <path d="M102 55 Q110 62 114 78 Q116 86 113 90" stroke="#a0a0a8" stroke-width="9" stroke-linecap="round"/>
+          <circle cx="47" cy="91" r="5" fill="#d4b896"/>
+          <circle cx="113" cy="91" r="5" fill="#d4b896"/>
+          <path d="M72 90 Q70 118 68 146" stroke="#7a7a80" stroke-width="10" stroke-linecap="round"/>
+          <path d="M88 90 Q90 118 92 146" stroke="#7a7a80" stroke-width="10" stroke-linecap="round"/>
+          <ellipse cx="68" cy="150" rx="9" ry="5" fill="#5a5a60"/>
+          <ellipse cx="92" cy="150" rx="9" ry="5" fill="#5a5a60"/>
+        </g>
+
+        <!-- STAGE 2 · En Route — meilleure posture, tenue training -->
+        <g class="av-stage" id="av-s2">
+          <circle cx="80" cy="27" r="17" fill="#d4b896"/>
+          <rect x="75" y="42" width="10" height="8" rx="2" fill="#c8a882"/>
+          <path d="M55 52 Q62 48 80 48 Q98 48 105 52 Q110 62 108 78 Q106 92 80 94 Q54 92 52 78 Q50 62 55 52Z" fill="#3a7bd5"/>
+          <path d="M72 48 L80 56 L88 48" fill="#2a6bc5"/>
+          <path d="M56 56 Q46 64 42 80 Q41 88 44 93" stroke="#3a7bd5" stroke-width="10" stroke-linecap="round"/>
+          <path d="M104 56 Q114 64 118 80 Q119 88 116 93" stroke="#3a7bd5" stroke-width="10" stroke-linecap="round"/>
+          <circle cx="44" cy="94" r="6" fill="#d4b896"/>
+          <circle cx="116" cy="94" r="6" fill="#d4b896"/>
+          <path d="M74 94 Q71 122 69 148" stroke="#1e4fa0" stroke-width="11" stroke-linecap="round"/>
+          <path d="M86 94 Q89 122 91 148" stroke="#1e4fa0" stroke-width="11" stroke-linecap="round"/>
+          <ellipse cx="69" cy="152" rx="10" ry="5" fill="#142e6e"/>
+          <ellipse cx="91" cy="152" rx="10" ry="5" fill="#142e6e"/>
+        </g>
+
+        <!-- STAGE 3 · Affûté — V-taper, posture confiante, tenue marquée -->
+        <g class="av-stage" id="av-s3">
+          <circle cx="80" cy="25" r="18" fill="#d4b896"/>
+          <rect x="74" y="41" width="12" height="9" rx="3" fill="#c8a882"/>
+          <path d="M48 50 Q62 44 80 44 Q98 44 112 50 Q118 62 116 80 Q112 96 80 100 Q48 96 44 80 Q42 62 48 50Z" fill="#e8930a"/>
+          <path d="M80 44 L80 100" stroke="#d07c08" stroke-width="1.5" opacity="0.5"/>
+          <path d="M68 52 Q66 72 68 92" stroke="#d07c08" stroke-width="1" opacity="0.4"/>
+          <path d="M92 52 Q94 72 92 92" stroke="#d07c08" stroke-width="1" opacity="0.4"/>
+          <path d="M50 54 Q38 64 34 82 Q33 90 36 96" stroke="#e8930a" stroke-width="12" stroke-linecap="round"/>
+          <path d="M110 54 Q122 64 126 82 Q127 90 124 96" stroke="#e8930a" stroke-width="12" stroke-linecap="round"/>
+          <circle cx="36" cy="97" r="7" fill="#d4b896"/>
+          <circle cx="124" cy="97" r="7" fill="#d4b896"/>
+          <path d="M72 100 Q68 126 66 152" stroke="#a05e06" stroke-width="13" stroke-linecap="round"/>
+          <path d="M88 100 Q92 126 94 152" stroke="#a05e06" stroke-width="13" stroke-linecap="round"/>
+          <ellipse cx="66" cy="156" rx="12" ry="6" fill="#6a3e04"/>
+          <ellipse cx="94" cy="156" rx="12" ry="6" fill="#6a3e04"/>
+        </g>
+
+        <!-- STAGE 4 · La Légende — imposant, stance large, élément signature -->
+        <g class="av-stage" id="av-s4">
+          <circle cx="80" cy="23" r="20" fill="#d4b896"/>
+          <rect x="72" y="41" width="16" height="10" rx="3" fill="#c8a882"/>
+          <path d="M38 48 Q60 40 80 40 Q100 40 122 48 Q132 62 130 84 Q126 102 80 108 Q34 102 30 84 Q28 62 38 48Z" fill="#2a2a2e"/>
+          <path d="M80 42 L80 106" stroke="#ff375f" stroke-width="3"/>
+          <path d="M38 52 Q34 50 32 54" stroke="#ff375f" stroke-width="3" stroke-linecap="round"/>
+          <path d="M122 52 Q126 50 128 54" stroke="#ff375f" stroke-width="3" stroke-linecap="round"/>
+          <path d="M40 56 Q26 68 24 86 Q24 98 30 104" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
+          <path d="M120 56 Q134 68 136 86 Q136 98 130 104" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
+          <circle cx="30" cy="105" r="9" fill="#ff375f"/>
+          <circle cx="130" cy="105" r="9" fill="#ff375f"/>
+          <path d="M68 108 Q62 130 58 158" stroke="#1a1a1e" stroke-width="16" stroke-linecap="round"/>
+          <path d="M92 108 Q98 130 102 158" stroke="#1a1a1e" stroke-width="16" stroke-linecap="round"/>
+          <ellipse cx="58" cy="162" rx="15" ry="7" fill="#ff375f"/>
+          <ellipse cx="102" cy="162" rx="15" ry="7" fill="#ff375f"/>
+        </g>
+      </svg>
     </div>
 
-    <!-- 4-stage inline SVG avatar, viewBox 0 0 160 186 -->
-    <svg class="avatar-svg" viewBox="0 0 160 186" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-      <!-- STAGE 1 · Apprenti — mince, épaules tombantes, posture voûtée -->
-      <g class="av-stage active" id="av-s1">
-        <!-- tête -->
-        <circle cx="80" cy="28" r="16" fill="#d4b896"/>
-        <!-- cou -->
-        <rect x="76" y="42" width="8" height="8" rx="2" fill="#c8a882"/>
-        <!-- torse voûté — épaules tombantes, dos arrondi -->
-        <path d="M58 52 Q62 50 80 50 Q98 50 102 52 Q106 60 104 76 Q102 88 80 90 Q58 88 56 76 Q54 60 58 52Z" fill="#a0a0a8"/>
-        <!-- bras gauche tombant -->
-        <path d="M58 55 Q50 62 46 78 Q44 86 47 90" stroke="#a0a0a8" stroke-width="9" stroke-linecap="round"/>
-        <!-- bras droit tombant -->
-        <path d="M102 55 Q110 62 114 78 Q116 86 113 90" stroke="#a0a0a8" stroke-width="9" stroke-linecap="round"/>
-        <!-- mains -->
-        <circle cx="47" cy="91" r="5" fill="#d4b896"/>
-        <circle cx="113" cy="91" r="5" fill="#d4b896"/>
-        <!-- jambes serrées -->
-        <path d="M72 90 Q70 118 68 146" stroke="#7a7a80" stroke-width="10" stroke-linecap="round"/>
-        <path d="M88 90 Q90 118 92 146" stroke="#7a7a80" stroke-width="10" stroke-linecap="round"/>
-        <!-- pieds -->
-        <ellipse cx="68" cy="150" rx="9" ry="5" fill="#5a5a60"/>
-        <ellipse cx="92" cy="150" rx="9" ry="5" fill="#5a5a60"/>
-      </g>
-
-      <!-- STAGE 2 · Disciple — plus carré, se redresse, tenue training -->
-      <g class="av-stage" id="av-s2">
-        <!-- tête -->
-        <circle cx="80" cy="27" r="17" fill="#d4b896"/>
-        <!-- cou -->
-        <rect x="75" y="42" width="10" height="8" rx="2" fill="#c8a882"/>
-        <!-- torse plus droit, légèrement élargi -->
-        <path d="M55 52 Q62 48 80 48 Q98 48 105 52 Q110 62 108 78 Q106 92 80 94 Q54 92 52 78 Q50 62 55 52Z" fill="#3a7bd5"/>
-        <!-- col training -->
-        <path d="M72 48 L80 56 L88 48" fill="#2a6bc5"/>
-        <!-- bras gauche semi-levé -->
-        <path d="M56 56 Q46 64 42 80 Q41 88 44 93" stroke="#3a7bd5" stroke-width="10" stroke-linecap="round"/>
-        <!-- bras droit semi-levé -->
-        <path d="M104 56 Q114 64 118 80 Q119 88 116 93" stroke="#3a7bd5" stroke-width="10" stroke-linecap="round"/>
-        <!-- mains -->
-        <circle cx="44" cy="94" r="6" fill="#d4b896"/>
-        <circle cx="116" cy="94" r="6" fill="#d4b896"/>
-        <!-- jambes légèrement écartées -->
-        <path d="M74 94 Q71 122 69 148" stroke="#1e4fa0" stroke-width="11" stroke-linecap="round"/>
-        <path d="M86 94 Q89 122 91 148" stroke="#1e4fa0" stroke-width="11" stroke-linecap="round"/>
-        <!-- pieds -->
-        <ellipse cx="69" cy="152" rx="10" ry="5" fill="#142e6e"/>
-        <ellipse cx="91" cy="152" rx="10" ry="5" fill="#142e6e"/>
-      </g>
-
-      <!-- STAGE 3 · Maître — athlétique, V-taper, posture droite confiante -->
-      <g class="av-stage" id="av-s3">
-        <!-- tête -->
-        <circle cx="80" cy="25" r="18" fill="#d4b896"/>
-        <!-- cou fort -->
-        <rect x="74" y="41" width="12" height="9" rx="3" fill="#c8a882"/>
-        <!-- torse V-taper marqué, épaules larges, taille fine -->
-        <path d="M48 50 Q62 44 80 44 Q98 44 112 50 Q118 62 116 80 Q112 96 80 100 Q48 96 44 80 Q42 62 48 50Z" fill="#e8930a"/>
-        <!-- détail torse : bandes musculaires -->
-        <path d="M80 44 L80 100" stroke="#d07c08" stroke-width="1.5" opacity="0.5"/>
-        <path d="M68 52 Q66 72 68 92" stroke="#d07c08" stroke-width="1" opacity="0.4"/>
-        <path d="M92 52 Q94 72 92 92" stroke="#d07c08" stroke-width="1" opacity="0.4"/>
-        <!-- bras gauche levé, coude visible -->
-        <path d="M50 54 Q38 64 34 82 Q33 90 36 96" stroke="#e8930a" stroke-width="12" stroke-linecap="round"/>
-        <!-- bras droit levé -->
-        <path d="M110 54 Q122 64 126 82 Q127 90 124 96" stroke="#e8930a" stroke-width="12" stroke-linecap="round"/>
-        <!-- mains larges -->
-        <circle cx="36" cy="97" r="7" fill="#d4b896"/>
-        <circle cx="124" cy="97" r="7" fill="#d4b896"/>
-        <!-- jambes écartées, stables -->
-        <path d="M72 100 Q68 126 66 152" stroke="#a05e06" stroke-width="13" stroke-linecap="round"/>
-        <path d="M88 100 Q92 126 94 152" stroke="#a05e06" stroke-width="13" stroke-linecap="round"/>
-        <!-- pieds -->
-        <ellipse cx="66" cy="156" rx="12" ry="6" fill="#6a3e04"/>
-        <ellipse cx="94" cy="156" rx="12" ry="6" fill="#6a3e04"/>
-      </g>
-
-      <!-- STAGE 4 · Légende — imposant, très large, stance large, détail signature -->
-      <g class="av-stage" id="av-s4">
-        <!-- tête -->
-        <circle cx="80" cy="23" r="20" fill="#d4b896"/>
-        <!-- cou puissant -->
-        <rect x="72" y="41" width="16" height="10" rx="3" fill="#c8a882"/>
-        <!-- torse massif V-taper extrême -->
-        <path d="M38 48 Q60 40 80 40 Q100 40 122 48 Q132 62 130 84 Q126 102 80 108 Q34 102 30 84 Q28 62 38 48Z" fill="#2a2a2e"/>
-        <!-- détail rouge signature : bande centrale -->
-        <path d="M80 42 L80 106" stroke="#ff375f" stroke-width="3"/>
-        <!-- épaulettes signature -->
-        <path d="M38 52 Q34 50 32 54" stroke="#ff375f" stroke-width="3" stroke-linecap="round"/>
-        <path d="M122 52 Q126 50 128 54" stroke="#ff375f" stroke-width="3" stroke-linecap="round"/>
-        <!-- bras gauche coude plié, imposant -->
-        <path d="M40 56 Q26 68 24 86" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
-        <path d="M24 86 Q24 98 30 104" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
-        <!-- bras droit coude plié -->
-        <path d="M120 56 Q134 68 136 86" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
-        <path d="M136 86 Q136 98 130 104" stroke="#2a2a2e" stroke-width="15" stroke-linecap="round"/>
-        <!-- gants/poings signature rouge -->
-        <circle cx="30" cy="105" r="9" fill="#ff375f"/>
-        <circle cx="130" cy="105" r="9" fill="#ff375f"/>
-        <!-- jambes très écartées, puissantes -->
-        <path d="M68 108 Q62 130 58 158" stroke="#1a1a1e" stroke-width="16" stroke-linecap="round"/>
-        <path d="M92 108 Q98 130 102 158" stroke="#1a1a1e" stroke-width="16" stroke-linecap="round"/>
-        <!-- pieds larges -->
-        <ellipse cx="58" cy="162" rx="15" ry="7" fill="#ff375f"/>
-        <ellipse cx="102" cy="162" rx="15" ry="7" fill="#ff375f"/>
-      </g>
-    </svg>
-
-    <!-- XP bar -->
+    <div class="hero-stage-name" id="hero-stage">Le Départ</div>
+    <div class="hero-level-row">
+      <span class="hero-lv" id="hero-lv">1</span>
+      <span class="hero-lv-lbl">Niveau</span>
+    </div>
     <div class="xp-bar-wrap">
       <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+      <div class="xp-lbl" id="xp-lbl">0 / 150 XP</div>
     </div>
-    <div class="xp-sub" id="xp-label">0 / 150 XP</div>
   </div>
 
   <!-- DATE -->
-  <div class="day-row">
-    <span class="day-text" id="day-text">—</span>
+  <div class="date-row">
+    <span class="date-text" id="date-text">—</span>
   </div>
 
   <!-- QUESTS -->
-  <div class="quests">
+  <div class="section-lbl">Quêtes du jour</div>
+  <div class="quests-list">
 
-    <div class="quest-card" data-quest="corps" id="quest-corps">
+    <div class="quest-card main-quest" data-q="biscottos" id="qcard-biscottos">
+      <span class="main-badge">⚔ Quête principale</span>
       <div class="quest-inner">
-        <div class="q-dot"></div>
+        <span class="q-icon">💪</span>
         <div class="q-info">
-          <div class="q-name">Sport</div>
+          <div class="q-name">La Quête des Biscottos</div>
           <div class="q-sub">Séance physique · 20 min</div>
         </div>
-        <div class="q-action" id="action-corps"></div>
+        <div class="q-action" id="qa-biscottos"></div>
       </div>
       <div class="q-bar-row">
-        <div class="q-track"><div class="q-fill" id="fill-corps"></div></div>
+        <div class="q-track"><div class="q-fill" id="qf-biscottos"></div></div>
       </div>
     </div>
 
-    <div class="quest-card" data-quest="esprit" id="quest-esprit">
+    <div class="quest-card" data-q="lecture" id="qcard-lecture">
       <div class="quest-inner">
-        <div class="q-dot"></div>
+        <span class="q-icon">📖</span>
         <div class="q-info">
-          <div class="q-name">Lecture</div>
-          <div class="q-sub">Apprentissage · 15 min</div>
+          <div class="q-name">Cerveau en Feu</div>
+          <div class="q-sub">Lecture · 15 min</div>
         </div>
-        <div class="q-action" id="action-esprit"></div>
+        <div class="q-action" id="qa-lecture"></div>
       </div>
       <div class="q-bar-row">
-        <div class="q-track"><div class="q-fill" id="fill-esprit"></div></div>
+        <div class="q-track"><div class="q-fill" id="qf-lecture"></div></div>
       </div>
     </div>
 
-    <div class="quest-card" data-quest="focus" id="quest-focus">
+    <div class="quest-card" data-q="flow" id="qcard-flow">
       <div class="quest-inner">
-        <div class="q-dot"></div>
+        <span class="q-icon">🎯</span>
         <div class="q-info">
-          <div class="q-name">Deep work</div>
-          <div class="q-sub">Concentration · 30 min</div>
+          <div class="q-name">Dans la Zone</div>
+          <div class="q-sub">Deep work · 30 min</div>
         </div>
-        <div class="q-action" id="action-focus"></div>
+        <div class="q-action" id="qa-flow"></div>
       </div>
       <div class="q-bar-row">
-        <div class="q-track"><div class="q-fill" id="fill-focus"></div></div>
+        <div class="q-track"><div class="q-fill" id="qf-flow"></div></div>
       </div>
     </div>
 
@@ -732,6 +752,7 @@
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title">Cette semaine</div>
+    <div class="modal-sub" id="modal-sub">—</div>
     <div id="recap-body"></div>
     <button class="btn-close" onclick="closeRecap()">Fermer</button>
   </div>
@@ -740,158 +761,135 @@
 <!-- LEVEL-UP -->
 <div id="lu-overlay">
   <div class="lu-content">
-    <div class="lu-label">Niveau</div>
-    <div class="lu-number" id="lu-number">2</div>
-    <div class="lu-stage"  id="lu-stage"></div>
+    <div class="lu-sup">Niveau</div>
+    <div class="lu-num" id="lu-num">2</div>
+    <div class="lu-stage-lbl" id="lu-stage"></div>
   </div>
 </div>
+
+<!-- PERFECT DAY FLASH -->
+<div id="perfect-flash"></div>
 
 <!-- TOAST -->
 <div id="toast"></div>
 
 <script>
-/* =============================================
-   CONFIG
-============================================= */
+/* ── CONFIG ─────────────────────────────────── */
 const QUESTS = {
-  corps:  { id: 'corps',  name: 'Sport',     minTime: 20 * 60, xp: 50 },
-  esprit: { id: 'esprit', name: 'Lecture',   minTime: 15 * 60, xp: 40 },
-  focus:  { id: 'focus',  name: 'Deep work', minTime: 30 * 60, xp: 60 }
+  biscottos: { id:'biscottos', name:'La Quête des Biscottos', minTime:20*60, xp:50 },
+  lecture:   { id:'lecture',   name:'Cerveau en Feu',         minTime:15*60, xp:35 },
+  flow:      { id:'flow',      name:'Dans la Zone',           minTime:30*60, xp:55 }
 };
 
 const LEVEL_XP = [
-  0, 150, 350, 600, 1000, 1500, 2100, 2800, 3600, 4600,
-  5800, 7200, 8800, 10600, 12800, 15300, 18100, 21200, 24600, 28400,
-  32500, 37000, 42000, 47500, 53500, 60000, 67500, 76000, 85000, 95000
+  0,150,350,600,1000,1500,2100,2800,3600,4600,
+  5800,7200,8800,10600,12800,15300,18100,21200,24600,28400,
+  32500,37000,42000,47500,53500,60000,67500,76000,85000,95000
 ];
 
-const STAGE_LABELS = ['Apprenti', 'Disciple', 'Maître', 'Légende'];
-const STAGE_COLORS = ['#8e8e93', '#007aff', '#ff9f0a', '#ff375f'];
-const BONUS_ALL_XP = 30;
+const STAGE_NAMES = ['Le Départ','En Route','Affûté','La Légende'];
+const BONUS_XP = 30;
 
-/* =============================================
-   STATE
-============================================= */
-const DEFAULT_TIMERS = () => ({
-  corps:  { running: false, elapsed: 0, startTs: null, completed: false },
-  esprit: { running: false, elapsed: 0, startTs: null, completed: false },
-  focus:  { running: false, elapsed: 0, startTs: null, completed: false }
+/* ── STATE ──────────────────────────────────── */
+const freshTimers = () => ({
+  biscottos: { running:false, elapsed:0, startTs:null, completed:false },
+  lecture:   { running:false, elapsed:0, startTs:null, completed:false },
+  flow:      { running:false, elapsed:0, startTs:null, completed:false }
 });
 
 let state;
-const intervals = {};
+const ticks = {};
 
 function loadState() {
   try {
-    const raw = localStorage.getItem('rpg_v1');
+    const raw = localStorage.getItem('rpg_v2');
     if (raw) {
       const s = JSON.parse(raw);
-      const today = getToday();
+      const today = dateKey(new Date());
       if (s.lastDate && s.lastDate !== today) {
-        const yesterday = shiftDate(-1);
-        const hadActivity = (s.log[yesterday] || {}).any;
-        if (!hadActivity && s.streak > 0) s.streak = 0;
-        s.timers = DEFAULT_TIMERS();
+        const prev = dateKey(shiftDays(-1));
+        if (!(s.log[prev]||{}).any && s.streak > 0) s.streak = 0;
+        s.timers = freshTimers();
       }
       s.lastDate = today;
       return s;
     }
-  } catch (_) {}
-  return { totalXP: 0, streak: 0, totalDays: 0, lastDate: getToday(),
-           log: {}, timers: DEFAULT_TIMERS() };
+  } catch(_) {}
+  return { totalXP:0, streak:0, totalDays:0,
+           lastDate:dateKey(new Date()), log:{}, timers:freshTimers() };
 }
 
-function save() { localStorage.setItem('rpg_v1', JSON.stringify(state)); }
+function save() { localStorage.setItem('rpg_v2', JSON.stringify(state)); }
 
-/* =============================================
-   DATE UTILS
-============================================= */
-function getToday() { return new Date().toISOString().split('T')[0]; }
-
-function shiftDate(days) {
-  const d = new Date();
-  d.setDate(d.getDate() + days);
-  return d.toISOString().split('T')[0];
-}
+/* ── DATE UTILS ─────────────────────────────── */
+function dateKey(d) { return d.toISOString().split('T')[0]; }
+function shiftDays(n) { const d=new Date(); d.setDate(d.getDate()+n); return d; }
 
 function todayLog() {
-  const t = getToday();
-  if (!state.log[t]) state.log[t] = {
-    corps: false, esprit: false, focus: false, any: false,
-    bonusAwarded: false, xp: 0, firstCompleted: false,
-    corpsTime: 0, espritTime: 0, focusTime: 0
+  const k = dateKey(new Date());
+  if (!state.log[k]) state.log[k] = {
+    biscottos:false, lecture:false, flow:false, any:false,
+    bonusAwarded:false, xp:0, firstCompleted:false,
+    biscottosTime:0, lectureTime:0, flowTime:0
   };
-  return state.log[t];
+  return state.log[k];
 }
 
-function fmt(secs) {
-  const m = Math.floor(secs / 60), s = secs % 60;
-  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+function fmt(s) {
+  const m = Math.floor(s/60), sec = s%60;
+  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+function fmtDur(s) {
+  const h=Math.floor(s/3600), m=Math.floor((s%3600)/60);
+  return h>0 ? `${h}h${String(m).padStart(2,'0')}` : `${m} min`;
 }
 
-function fmtDuration(secs) {
-  const h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60);
-  return h > 0 ? `${h}h${String(m).padStart(2,'0')}` : `${m} min`;
-}
-
-/* =============================================
-   LEVEL / XP
-============================================= */
+/* ── LEVEL / XP ─────────────────────────────── */
 function getLevel(xp) {
-  for (let i = LEVEL_XP.length - 1; i >= 0; i--)
-    if (xp >= LEVEL_XP[i]) return i + 1;
+  for (let i=LEVEL_XP.length-1; i>=0; i--)
+    if (xp>=LEVEL_XP[i]) return i+1;
   return 1;
 }
-
-function getLevelProgress(xp) {
-  const lv   = getLevel(xp);
-  const cur  = LEVEL_XP[lv - 1] || 0;
-  const next = LEVEL_XP[lv] || LEVEL_XP[LEVEL_XP.length - 1] + 10000;
-  const prog = xp - cur, total = next - cur;
-  return { prog, total, pct: Math.min(100, prog / total * 100), lv };
+function lvProgress(xp) {
+  const lv  = getLevel(xp);
+  const cur  = LEVEL_XP[lv-1]||0;
+  const next = LEVEL_XP[lv]||LEVEL_XP[LEVEL_XP.length-1]+10000;
+  return { pct:Math.min(100,(xp-cur)/(next-cur)*100), prog:xp-cur, total:next-cur, lv };
 }
-
 function getStage(lv) {
-  if (lv >= 30) return 4;
-  if (lv >= 15) return 3;
-  if (lv >= 5)  return 2;
+  if (lv>=30) return 4;
+  if (lv>=15) return 3;
+  if (lv>=5)  return 2;
   return 1;
 }
 
-/* =============================================
-   TIMER ENGINE
-============================================= */
-function getElapsed(id) {
+/* ── TIMER ENGINE ───────────────────────────── */
+function elapsed(id) {
   const t = state.timers[id];
   if (!t.running || !t.startTs) return t.elapsed;
-  return t.elapsed + Math.floor((Date.now() - t.startTs) / 1000);
+  return t.elapsed + Math.floor((Date.now()-t.startTs)/1000);
 }
 
 function toggleTimer(id) {
   const t = state.timers[id];
   if (t.completed) return;
   if (t.running) {
-    t.elapsed  = getElapsed(id);
-    t.running  = false;
-    t.startTs  = null;
-    clearInterval(intervals[id]);
-    delete intervals[id];
+    t.elapsed = elapsed(id);
+    t.running = false; t.startTs = null;
+    clearInterval(ticks[id]); delete ticks[id];
   } else {
-    t.running = true;
-    t.startTs = Date.now();
-    intervals[id] = setInterval(() => renderQuestCard(id), 1000);
+    t.running = true; t.startTs = Date.now();
+    ticks[id] = setInterval(() => renderCard(id), 1000);
   }
-  save();
-  renderQuestCard(id);
+  save(); renderCard(id);
 }
 
 function completeQuest(id) {
   const t = state.timers[id];
   if (t.completed) return;
-
-  t.elapsed = getElapsed(id);
+  t.elapsed = elapsed(id);
   t.running = false; t.startTs = null;
-  clearInterval(intervals[id]); delete intervals[id];
+  clearInterval(ticks[id]); delete ticks[id];
   t.completed = true;
 
   const log = todayLog();
@@ -899,13 +897,15 @@ function completeQuest(id) {
 
   const prevLv = getLevel(state.totalXP);
   state.totalXP += QUESTS[id].xp;
-  log.xp = (log.xp || 0) + QUESTS[id].xp;
+  log.xp = (log.xp||0) + QUESTS[id].xp;
 
-  if (log.corps && log.esprit && log.focus && !log.bonusAwarded) {
-    state.totalXP += BONUS_ALL_XP;
-    log.xp += BONUS_ALL_XP;
+  if (log.biscottos && log.lecture && log.flow && !log.bonusAwarded) {
+    state.totalXP += BONUS_XP;
+    log.xp += BONUS_XP;
     log.bonusAwarded = true;
-    setTimeout(() => toast(`Bonus +${BONUS_ALL_XP} XP — Journée parfaite !`), 1400);
+    setTimeout(() => {
+      flash(); toast(`⭐ Journée parfaite · Bonus +${BONUS_XP} XP !`);
+    }, 900);
   }
 
   if (!log.firstCompleted) {
@@ -917,135 +917,129 @@ function completeQuest(id) {
   save();
   const newLv = getLevel(state.totalXP);
   if (newLv > prevLv) setTimeout(() => showLevelUp(newLv, prevLv), 900);
-
-  toast(`+${QUESTS[id].xp} XP — ${QUESTS[id].name} !`);
+  toast(`+${QUESTS[id].xp} XP · ${QUESTS[id].name}`);
   renderAll();
 }
 
-/* =============================================
-   RENDER
-============================================= */
-function renderQuestCard(id) {
-  const t       = state.timers[id];
-  const elapsed = getElapsed(id);
-  const pct     = Math.min(100, elapsed / QUESTS[id].minTime * 100);
-  const reached = elapsed >= QUESTS[id].minTime;
+/* ── RENDER ─────────────────────────────────── */
+function renderCard(id) {
+  const t   = state.timers[id];
+  const el  = elapsed(id);
+  const pct = Math.min(100, el/QUESTS[id].minTime*100);
+  const ok  = el >= QUESTS[id].minTime;
 
-  const fill = document.getElementById(`fill-${id}`);
+  const fill = document.getElementById(`qf-${id}`);
   if (fill) fill.style.width = `${pct}%`;
 
-  const card = document.getElementById(`quest-${id}`);
-  if (card) card.classList.toggle('completed', t.completed);
+  const card = document.getElementById(`qcard-${id}`);
+  if (card) card.classList.toggle('done', t.completed);
 
-  const area = document.getElementById(`action-${id}`);
+  const area = document.getElementById(`qa-${id}`);
   if (!area) return;
 
   if (t.completed) {
     area.innerHTML = `<div class="badge-done">✓ ${fmt(t.elapsed)}</div>`;
-  } else if (reached && t.running) {
+  } else if (ok && t.running) {
     area.innerHTML = `<button class="btn-complete" onclick="completeQuest('${id}')">Terminer</button>`;
   } else {
-    const icon = t.running ? '⏸' : '▶';
-    area.innerHTML = `<button class="btn-timer ${t.running ? 'running' : ''}" onclick="toggleTimer('${id}')">${icon} ${fmt(elapsed)}</button>`;
+    area.innerHTML = `<button class="btn-timer ${t.running?'running':''}" onclick="toggleTimer('${id}')">${t.running?'⏸':'▶'} ${fmt(el)}</button>`;
   }
 }
 
 function renderHero() {
-  const { pct, prog, total, lv } = getLevelProgress(state.totalXP);
+  const { pct, prog, total, lv } = lvProgress(state.totalXP);
   const stage = getStage(lv);
 
-  const lvEl = document.getElementById('ring-level');
-  if (lvEl) lvEl.textContent = lv;
+  document.getElementById('hero-lv').textContent = lv;
+  document.getElementById('hero-stage').textContent = STAGE_NAMES[stage-1];
+  document.getElementById('xp-fill').style.width = `${pct}%`;
+  document.getElementById('xp-lbl').textContent = `${prog} / ${total} XP`;
 
-  const stEl = document.getElementById('ring-stage');
-  if (stEl) stEl.textContent = STAGE_LABELS[stage - 1];
-
-  for (let s = 1; s <= 4; s++) {
+  for (let s=1; s<=4; s++) {
     const g = document.getElementById(`av-s${s}`);
-    if (g) g.classList.toggle('active', s === stage);
+    if (g) g.classList.toggle('active', s===stage);
   }
-
-  const fill = document.getElementById('xp-fill');
-  if (fill) fill.style.width = `${pct}%`;
-
-  const lbl = document.getElementById('xp-label');
-  if (lbl) lbl.textContent = `${prog} / ${total} XP`;
-
-  const section = document.getElementById('ring-section');
-  if (section) section.dataset.stage = stage;
+  document.getElementById('app').dataset.stage = stage;
 }
 
 function renderStats() {
-  const el = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-  el('stat-streak', state.streak);
-  el('stat-days',   state.totalDays);
-  el('stat-xp',     state.totalXP);
+  document.getElementById('stat-streak').textContent = state.streak;
+  document.getElementById('stat-days').textContent   = state.totalDays;
+  document.getElementById('stat-xp').textContent     = state.totalXP;
 }
 
 function renderDate() {
-  const el = document.getElementById('day-text');
-  if (el) el.textContent = new Date().toLocaleDateString('fr-FR',
-    { weekday: 'long', day: 'numeric', month: 'long' });
+  const d = new Date();
+  document.getElementById('date-text').textContent =
+    d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+  const s = state.streak;
+  document.getElementById('day-badge').textContent =
+    `Jour ${state.totalDays + 1}  ·  Série ${s}${s>0?' 🔥':''}`;
 }
 
 function renderAll() {
   renderHero();
   renderStats();
-  Object.keys(QUESTS).forEach(id => renderQuestCard(id));
+  renderDate();
+  Object.keys(QUESTS).forEach(id => renderCard(id));
 }
 
-/* =============================================
-   LEVEL-UP
-============================================= */
+/* ── ANIMATIONS ─────────────────────────────── */
+function flash() {
+  const el = document.getElementById('perfect-flash');
+  el.classList.remove('show'); void el.offsetWidth;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 800);
+}
+
 function showLevelUp(newLv, prevLv) {
   const stage = getStage(newLv);
-  const stageChanged = stage !== getStage(prevLv);
-  document.getElementById('lu-number').textContent = newLv;
-  document.getElementById('lu-stage').textContent  = stageChanged ? STAGE_LABELS[stage - 1] : '';
+  const changed = stage !== getStage(prevLv);
+  document.getElementById('lu-num').textContent = newLv;
+  document.getElementById('lu-stage').textContent = changed ? STAGE_NAMES[stage-1] : '';
   const ov = document.getElementById('lu-overlay');
   ov.classList.remove('show'); void ov.offsetWidth;
   ov.classList.add('show'); ov.style.pointerEvents = 'all';
-  setTimeout(() => { ov.classList.remove('show'); ov.style.pointerEvents = 'none'; }, 3900);
+  setTimeout(() => { ov.classList.remove('show'); ov.style.pointerEvents = 'none'; }, 4100);
 }
 
-/* =============================================
-   RECAP
-============================================= */
+/* ── RECAP ──────────────────────────────────── */
 function openRecap()  { buildRecap(); document.getElementById('recap-modal').classList.add('open'); }
 function closeRecap() { document.getElementById('recap-modal').classList.remove('open'); }
 
 function buildRecap() {
-  const today     = getToday();
-  const dow       = new Date().getDay();
-  const mondayOff = dow === 0 ? -6 : 1 - dow;
-  const LABELS    = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-  const days      = Array.from({length: 7}, (_, i) => shiftDate(mondayOff + i));
+  const today = dateKey(new Date());
+  const dow = new Date().getDay();
+  const off = dow===0 ? -6 : 1-dow;
+  const LABELS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  const days = Array.from({length:7}, (_,i) => dateKey(shiftDays(off+i)));
 
-  let wXP = 0, wQ = 0, wCorps = 0, wEsprit = 0, wFocus = 0;
-
-  const squares = days.map((d, i) => {
-    const log = state.log[d] || {};
-    const done = (log.corps?1:0) + (log.esprit?1:0) + (log.focus?1:0);
-    wXP += log.xp || 0; wQ += done;
-    wCorps  += log.corpsTime  || 0;
-    wEsprit += log.espritTime || 0;
-    wFocus  += log.focusTime  || 0;
-    const cls = d === today ? 'today' : d > today ? 'future' : done > 0 ? 'active' : '';
+  let wXP=0, wQ=0, wB=0, wL=0, wF=0;
+  const squares = days.map((d,i) => {
+    const log = state.log[d]||{};
+    const done = (log.biscottos?1:0)+(log.lecture?1:0)+(log.flow?1:0);
+    wXP+=log.xp||0; wQ+=done;
+    wB+=log.biscottosTime||0; wL+=log.lectureTime||0; wF+=log.flowTime||0;
+    const cls = d===today ? 'today' : d>today ? 'future' : done>0 ? 'active' : '';
     return `<div class="day-sq ${cls}">
       <span class="day-lbl">${LABELS[i]}</span>
       <div class="day-dots">
-        <span class="d-dot ${log.corps  ? 'corps-done'  : ''}"></span>
-        <span class="d-dot ${log.esprit ? 'esprit-done' : ''}"></span>
-        <span class="d-dot ${log.focus  ? 'focus-done'  : ''}"></span>
+        <span class="d-dot ${log.biscottos?'b-done':''}"></span>
+        <span class="d-dot ${log.lecture?'l-done':''}"></span>
+        <span class="d-dot ${log.flow?'f-done':''}"></span>
       </div></div>`;
   }).join('');
 
+  const activeDays = days.filter(d => (state.log[d]||{}).any).length;
+  document.getElementById('modal-sub').textContent =
+    `${activeDays} jour${activeDays>1?'s':''} actif${activeDays>1?'s':''} cette semaine`;
+
   const msgs = [
-    'La régularité bat l\'intensité.',
-    'Chaque session compte.',
-    'Discipline = liberté.',
-    'Tu construis quelque chose de réel.',
-    'Le corps et l\'esprit, ensemble.'
+    '"La régularité bat l\'intensité, chaque fois."',
+    '"Tu construis quelque chose de réel. Ça prend du temps."',
+    '"Chaque rep, chaque page, chaque session — ça compte."',
+    '"Les champions sont faits de choses imperceptibles."',
+    '"Discipline = liberté."'
   ];
 
   document.getElementById('recap-body').innerHTML = `
@@ -1053,40 +1047,35 @@ function buildRecap() {
     <div class="recap-stats">
       <div class="rs-card"><span class="rs-val">${wXP}</span><span class="rs-lbl">⚡ XP</span></div>
       <div class="rs-card"><span class="rs-val">${wQ}</span><span class="rs-lbl">Quêtes</span></div>
-      <div class="rs-card"><span class="rs-val">${fmtDuration(wFocus)}</span><span class="rs-lbl">Deep work</span></div>
-      <div class="rs-card"><span class="rs-val">${fmtDuration(wCorps)}</span><span class="rs-lbl">Sport</span></div>
-      <div class="rs-card"><span class="rs-val">${fmtDuration(wEsprit)}</span><span class="rs-lbl">Lecture</span></div>
+      <div class="rs-card"><span class="rs-val">${fmtDur(wB)}</span><span class="rs-lbl">💪 Biscottos</span></div>
+      <div class="rs-card"><span class="rs-val">${fmtDur(wL)}</span><span class="rs-lbl">📖 Lecture</span></div>
+      <div class="rs-card"><span class="rs-val">${fmtDur(wF)}</span><span class="rs-lbl">🎯 Deep work</span></div>
       <div class="rs-card"><span class="rs-val">${state.streak}</span><span class="rs-lbl">🔥 Série</span></div>
     </div>
-    <div class="recap-msg">${msgs[Math.floor(Math.random() * msgs.length)]}</div>`;
+    <div class="recap-msg">${msgs[Math.floor(Math.random()*msgs.length)]}</div>`;
 }
 
-/* =============================================
-   TOAST
-============================================= */
-let toastTimer;
+/* ── TOAST ──────────────────────────────────── */
+let toastTmr;
 function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+  clearTimeout(toastTmr);
+  toastTmr = setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-/* =============================================
-   INIT
-============================================= */
+/* ── INIT ───────────────────────────────────── */
 function init() {
   state = loadState();
   Object.keys(QUESTS).forEach(id => {
     if (state.timers[id].running)
-      intervals[id] = setInterval(() => renderQuestCard(id), 1000);
+      ticks[id] = setInterval(() => renderCard(id), 1000);
   });
-  renderDate();
   renderAll();
 }
 
 document.getElementById('recap-modal').addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeRecap();
+  if (e.target===e.currentTarget) closeRecap();
 });
 
 document.addEventListener('DOMContentLoaded', init);
